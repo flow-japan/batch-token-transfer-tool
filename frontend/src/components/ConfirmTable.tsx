@@ -21,7 +21,7 @@ const ConfirmTable: React.FC<{
   totalAmount: BigNumber;
   remaining: BigNumber;
 }> = (props) => {
-  const [userAccount, setUserAccount] = useRecoilState(userAccountState);
+  const [userAccount] = useRecoilState(userAccountState);
 
   return (
     <TableContainer>

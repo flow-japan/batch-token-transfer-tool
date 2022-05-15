@@ -28,7 +28,7 @@ const BatchTransfer = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  const [userAccount, setUserAccount] = useRecoilState(userAccountState);
+  const [userAccount] = useRecoilState(userAccountState);
   const [toAddresses, setToAddresses] = useState<string[]>([]);
   const [amounts, setAmounts] = useState<string[]>([]);
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
@@ -78,7 +78,7 @@ const BatchTransfer = () => {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     if (!checkDone) {
       // TODO: Check if the address exists and has Vault.
       setCheckDone(true);

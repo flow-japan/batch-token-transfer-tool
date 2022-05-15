@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
-import { Heading, Center, Spacer } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import styles from '../styles/Layout.module.css';
 
 type Props = {

@@ -8,6 +8,6 @@ type UserAccount = {
 };
 
 export const userAccountState = atom<UserAccount | null>({
-  key: "userAccount",
+  key: 'userAccount',
   default: null,
 });

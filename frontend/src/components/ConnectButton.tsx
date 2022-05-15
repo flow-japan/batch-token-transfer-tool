@@ -4,7 +4,7 @@ import { userAccountState } from '../store';
 import { connectWallet, getBalances } from '../services/flow';
 
 const ConnectButton = () => {
-  const [userAccount, setUserAccount] = useRecoilState(userAccountState);
+  const [, setUserAccount] = useRecoilState(userAccountState);
 
   const connect = async () => {
     const account = await connectWallet();
