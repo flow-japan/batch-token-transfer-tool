@@ -10,6 +10,7 @@ module.exports = {
         'plugin:react/recommended',
         'next/core-web-vitals',
         'google',
+        'prettier',
     ],
     'parser': '@typescript-eslint/parser',
     'parserOptions': {
@@ -18,6 +19,7 @@ module.exports = {
         },
         'ecmaVersion': 'latest',
         'sourceType': 'module',
+        'project': './tsconfig.json',
     },
     'plugins': [
         'react',
@@ -25,8 +27,6 @@ module.exports = {
         '@typescript-eslint',
     ],
     'rules': {
-        'semi': ['error', 'never'],
         'require-jsdoc': ['off'],
-        'spaced-comment': ['off'],
     },
 }

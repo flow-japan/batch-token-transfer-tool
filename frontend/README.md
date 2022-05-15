@@ -10,4 +10,6 @@ yarn dev
 
 ## How To Deploy
 
-- Use [Vercel](https://vercel.com/)
+- Setup [Vercel](https://vercel.com/) with the following settings:
+  - Framework preset: Next.js
+  - Root directory: `frontend`

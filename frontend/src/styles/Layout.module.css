@@ -1,0 +1,53 @@
+.container {
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 120px;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+
+  background: #1d976c; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #3a7bd5,
+    #00d2ff,
+    #fff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #3a7bd5,
+    #00d2ff,
+    #fff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.heading {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  line-height: 1.2;
+  display: block;
+  font-size: 2em;
+  margin-block-start: 1em;
+  margin-block-end: 0.5em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: 100;
+}
+
+.main {
+  justify-content: start;
+  align-items: center;
+}
+
+.header {
+  top: 0px;
+  width: 100%;
+  padding: 20px;
+}
+
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 30px 0;
+  position: absolute;
+  bottom: 0;
+}
