@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Center,
   Heading,
@@ -37,10 +37,18 @@ const BatchTransfer = () => {
   const [errorText, setErrorText] = useState('');
   const [checkDone, setCheckDone] = useState(false);
 
+  const resetConfirm = () => {
+    setToAddresses([]);
+    setAmounts([]);
+    setTotalAmount(new BigNumber(0.0));
+    setRemaining(new BigNumber(userAccount?.balanceFLOW || 0));
+  };
+
   const loadToAddressesAndAmounts = (recipientsAndAmountsStr: string) => {
     setErrorText('');
     setCheckDone(false);
     if (!recipientsAndAmountsStr) {
+      resetConfirm();
       return;
     }
     const toAddresses: string[] = [];
@@ -94,6 +102,10 @@ const BatchTransfer = () => {
       }
     }
   };
+
+  useEffect(() => {
+    loadToAddressesAndAmounts('');
+  }, []);
 
   return (
     <Box p={4} bg={'white'} shadow='md' rounded='md'>
