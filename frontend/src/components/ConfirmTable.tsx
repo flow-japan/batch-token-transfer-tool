@@ -20,6 +20,7 @@ const ConfirmTable: React.FC<{
   amounts: string[];
   totalAmount: BigNumber;
   remaining: BigNumber;
+  currencySymbol: string;
 }> = (props) => {
   const [userAccount] = useRecoilState(userAccountState);
 
@@ -56,7 +57,7 @@ const ConfirmTable: React.FC<{
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>{props.totalAmount.toString()}</Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  {props.currency}
+                  {props.currencySymbol}
                 </Text>
               </Flex>
             </Th>
@@ -67,11 +68,11 @@ const ConfirmTable: React.FC<{
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>
                   {new BigNumber(
-                    userAccount?.balance[props.currency] || 0
+                    userAccount?.balance[props.currencySymbol] || 0
                   ).toString()}
                 </Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  {props.currency}
+                  {props.currencySymbol}
                 </Text>
               </Flex>
             </Th>
@@ -82,7 +83,7 @@ const ConfirmTable: React.FC<{
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>{props.remaining.toString()}</Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  {props.currency}
+                  {props.currencySymbol}
                 </Text>
               </Flex>
             </Th>

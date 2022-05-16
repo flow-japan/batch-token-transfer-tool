@@ -20,17 +20,56 @@ import { userAccountState } from '../store';
 import { logout, sendFT, waitTx } from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
 
-const BatchTransfer = () => {
-  // TODO:
-  // const explorerUrl = 'https://flowscan.org/transaction/';
-  const explorerUrl = 'https://testnet.flowscan.org/transaction/';
+type Currency = {
+  symbol: string;
+  contractName: string;
+  address: string;
+  vaultStoragePath: string;
+  vaultPublicPath: string;
+};
 
+const FLOWCurrency: Currency = {
+  symbol: 'FLOW',
+  contractName: 'FlowToken',
+  address:
+    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+      ? '0x1654653399040a61'
+      : '0x7e60df042a9c0868',
+  vaultStoragePath: '/storage/flowTokenVault',
+  vaultPublicPath: '/public/flowTokenReceiver',
+};
+
+const CustomCurrency: Currency = {
+  symbol: '',
+  contractName: '',
+  address: '',
+  vaultStoragePath: '',
+  vaultPublicPath: '',
+};
+
+const FUSDCurrency: Currency = {
+  symbol: 'FUSD',
+  contractName: 'FUSD',
+  address:
+    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+      ? '0x3c5959b568896393'
+      : '0xe223d8a629e49c68',
+  vaultStoragePath: '/storage/fusdVault',
+  vaultPublicPath: '/public/fusdReceiver',
+};
+
+const explorerUrl =
+  process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+    ? 'https://flowscan.org/transaction/'
+    : 'https://testnet.flowscan.org/transaction/';
+
+const BatchTransfer = () => {
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  const [userAccount] = useRecoilState(userAccountState);
-  const [currency, setCurrency] = useState('FLOW');
+  const [userAccount, setUserAccount] = useRecoilState(userAccountState);
+  const [currency, setCurrency] = useState(FLOWCurrency);
   const [toAddresses, setToAddresses] = useState<string[]>([]);
   const [amounts, setAmounts] = useState<string[]>([]);
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
@@ -43,7 +82,7 @@ const BatchTransfer = () => {
     setToAddresses([]);
     setAmounts([]);
     setTotalAmount(new BigNumber(0.0));
-    setRemaining(new BigNumber(userAccount?.balance[currency] || 0));
+    setRemaining(new BigNumber(userAccount?.balance[currency.symbol] || 0));
   };
 
   const loadToAddressesAndAmounts = (recipientsAndAmountsStr: string) => {
@@ -78,9 +117,9 @@ const BatchTransfer = () => {
       new BigNumber(0.0)
     );
     setTotalAmount(totalAmount);
-    const remaining = new BigNumber(userAccount?.balance[currency] || 0).minus(
-      totalAmount
-    );
+    const remaining = new BigNumber(
+      userAccount?.balance[currency.symbol] || 0
+    ).minus(totalAmount);
     setRemaining(remaining);
 
     if (remaining.lt(0)) {
@@ -91,11 +130,22 @@ const BatchTransfer = () => {
   const onSubmit = async () => {
     if (!checkDone) {
       // TODO: Check if the address exists and has Vault.
+      if (totalAmount.eq(0)) {
+        setErrorText('Total is zero');
+        return;
+      }
       setCheckDone(true);
     } else {
       try {
         setErrorText('');
-        const tx = await sendFLOW(toAddresses, amounts);
+        const tx = await sendFT(
+          toAddresses,
+          amounts,
+          currency.contractName,
+          currency.address,
+          currency.vaultStoragePath,
+          currency.vaultPublicPath
+        );
         setTxHash(tx.transactionId);
         await waitTx(tx);
       } catch (e) {
@@ -122,7 +172,7 @@ const BatchTransfer = () => {
                   </Heading>{' '}
                   {userAccount.address}
                 </Box>
-                <Box as='abbr'>
+                <Box as='p'>
                   <Heading as='h5' size='sm'>
                     Balance
                   </Heading>{' '}
@@ -143,7 +193,7 @@ const BatchTransfer = () => {
                     </Button>
                   </Box>
                 </Box>
-                <Box as='kbd'></Box>
+                <Box as='p'></Box>
               </>
             ) : null}
             <FormControl isInvalid={errors.email} className='mt-10'>
@@ -157,12 +207,18 @@ const BatchTransfer = () => {
                 mb={6}
                 size={'md'}
                 onChange={(e) => {
-                  const _currency = e.target.value;
-                  setCurrency(_currency);
+                  const currencySymbol = e.target.value;
+                  setCurrency(
+                    currencySymbol === 'FLOW'
+                      ? { ...FLOWCurrency }
+                      : currencySymbol === 'FUSD'
+                      ? { ...FUSDCurrency }
+                      : { ...CustomCurrency }
+                  );
                   setRemaining(
-                    new BigNumber(userAccount?.balance[_currency] || 0).minus(
-                      totalAmount
-                    )
+                    new BigNumber(
+                      userAccount?.balance[currencySymbol] || 0
+                    ).minus(totalAmount)
                   );
                 }}
               >
@@ -171,7 +227,7 @@ const BatchTransfer = () => {
               </Select>
               <FormLabel htmlFor='addresses'>
                 <Heading as='h5' size='sm'>
-                  Recipients & Amounts in {currency}
+                  Recipients & Amounts in {currency.symbol}
                 </Heading>{' '}
               </FormLabel>
               <Textarea
@@ -196,7 +252,7 @@ const BatchTransfer = () => {
                 amounts={amounts}
                 totalAmount={totalAmount}
                 remaining={remaining}
-                currency={currency}
+                currencySymbol={currency.symbol}
               />
             </Box>
             <Divider />
@@ -218,7 +274,7 @@ const BatchTransfer = () => {
                 disabled={!!errorText}
                 type='submit'
               >
-                {checkDone ? `Send ${currency}` : 'Check'}
+                {checkDone ? `Send ${currency.symbol}` : 'Check'}
               </Button>
             </Center>
             <VStack>

@@ -2,13 +2,27 @@ const fcl = require('@onflow/fcl'); // Using import causes an error.
 import * as types from '@onflow/types';
 
 fcl.config({
-  'accessNode.api': 'https://rest-testnet.onflow.org',
-  // "accessNode.api": "https://access-testnet.onflow.org", // Mainnet: "https://access-mainnet-beta.onflow.org"
-  'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn', // Mainnet: "https://fcl-discovery.onflow.org/authn"
+  'accessNode.api': process.env.NEXT_PUBLIC_NETWORK == 'mainnet' ? 'https://rest-mainnet.onflow.org' : 'https://rest-testnet.onflow.org',
+  'discovery.wallet': process.env.NEXT_PUBLIC_NETWORK == 'mainnet' ? "https://fcl-discovery.onflow.org/authn" : 'https://fcl-discovery.onflow.org/testnet/authn',
   'app.detail.title': 'Batch Token Transfer Tool',
   'app.detail.icon':
     'https://batch-token-transfer-tool-dev.vercel.app/logo.png',
 });
+
+const fungibleTokenAddress =
+  process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+    ? '0xf233dcee88fe0abe'
+    : '0x9a0766d93b6608b7';
+
+const flowTokenAddress =
+  process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+    ? '0x1654653399040a61'
+    : '0x7e60df042a9c0868';
+
+const fusdAddress =
+  process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+    ? '0x3c5959b568896393'
+    : '0xe223d8a629e49c68';
 
 const connectWallet = async () => {
   const account = await fcl.authenticate();
@@ -18,17 +32,16 @@ const connectWallet = async () => {
   return account;
 };
 
+const logout = async () => {
+  fcl.unauthenticate();
+};
+
 const getBalances = async (address: string) => {
   return await fcl.query({
-    // Mainnet
-    // import FungibleToken from 0xf233dcee88fe0abe
-    // import FlowToken from 0x1654653399040a61
-    // import FUSD from 0x3c5959b568896393
-    // Testnet
     cadence: `
-        import FungibleToken from 0x9a0766d93b6608b7
-        import FlowToken from 0x7e60df042a9c0868
-        import FUSD from 0xe223d8a629e49c68
+        import FungibleToken from ${fungibleTokenAddress}
+        import FlowToken from ${flowTokenAddress}
+        import FUSD from ${fusdAddress}
 
         pub fun main(address: Address): [UFix64] {
             let acct = getAccount(address)
@@ -65,25 +78,27 @@ const waitTx = async (tx: any) => {
   await fcl.tx(tx).onceSealed();
 };
 
-const sendFLOW = async (
+const sendFT = async (
   toAddresses: string[],
-  amounts: string[]
+  amounts: string[],
+  currencyContractName: string,
+  currencyAddress: string,
+  currencyVaultStoragePath: string,
+  currencyVaultPublicPath: string,
 ): Promise<any> => {
-  // import FungibleToken from 0xf233dcee88fe0abe
-  // import FlowToken from 0x1654653399040a61
   const txCode = `
-import FungibleToken from 0x9a0766d93b6608b7
-import FlowToken from 0x7e60df042a9c0868
+import FungibleToken from ${fungibleTokenAddress}
+import ${currencyContractName} from ${currencyAddress}
 
 transaction(toAddresses: [Address], amounts: [UFix64]) {
     prepare(signer: AuthAccount) {
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let vaultRef = signer.borrow<&${currencyContractName}.Vault>(from: ${currencyVaultStoragePath})
             ?? panic("Could not borrow Vault")
 
         var i = 0
         while i < toAddresses.length {
             let receiverRef =  getAccount(toAddresses[i])
-                .getCapability(/public/flowTokenReceiver)
+                .getCapability(${currencyVaultPublicPath})
                 .borrow<&{FungibleToken.Receiver}>()
             if receiverRef != nil {
                 let sentVault <- vaultRef.withdraw(amount: amounts[i])
@@ -100,4 +115,4 @@ transaction(toAddresses: [Address], amounts: [UFix64]) {
   return await sendTx(txCode, args);
 };
 
-export { connectWallet, getBalances, sendFLOW, waitTx };
+export { connectWallet, logout, getBalances, sendFT, waitTx };
