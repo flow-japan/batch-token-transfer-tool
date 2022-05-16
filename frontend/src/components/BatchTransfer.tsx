@@ -17,8 +17,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
-import { logout, sendFT, waitTx } from '../services/flow';
+import { logout, sendFT, waitTx as transactionStatusPoller } from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
+import SendButton from './SendButton';
 
 type Currency = {
   symbol: string;
@@ -75,6 +76,7 @@ const BatchTransfer = () => {
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
   const [remaining, setRemaining] = useState<BigNumber>(new BigNumber(0.0));
   const [txHash, setTxHash] = useState('');
+  const [txStatus, setTxStatus] = useState(-1)
   const [errorText, setErrorText] = useState('');
   const [checkDone, setCheckDone] = useState(false);
 
@@ -147,7 +149,6 @@ const BatchTransfer = () => {
           currency.vaultPublicPath
         );
         setTxHash(tx.transactionId);
-        await waitTx(tx);
       } catch (e) {
         console.log('error:', e);
         setErrorText(String(e));
@@ -158,6 +159,19 @@ const BatchTransfer = () => {
   useEffect(() => {
     loadToAddressesAndAmounts('');
   }, []);
+
+  useEffect(() => {
+    if (!txHash) {
+      return
+    }
+    transactionStatusPoller(txHash).subscribe((x: any) => {
+      if(!x.status){
+        return
+      }
+      console.log(`tx status[${x.status}]:`, x)
+      setTxStatus(x.status)
+    })
+  }, [txHash])
 
   return (
     <Box p={4} bg={'white'} shadow='md' rounded='md'>
@@ -266,32 +280,16 @@ const BatchTransfer = () => {
               )}
             </VStack>
             <Center>
-              <Button
-                mt={4}
-                colorScheme='blue'
-                size={'lg'}
+              <SendButton
+                status={txStatus}
+                txid={txHash}
                 isLoading={isSubmitting}
                 disabled={!!errorText}
-                type='submit'
-              >
-                {checkDone ? `Send ${currency.symbol}` : 'Check'}
-              </Button>
+                checkDone={checkDone}
+                symbol={currency.symbol}
+                explorerUrl={explorerUrl}
+                />
             </Center>
-            <VStack>
-              {txHash && (
-                <>
-                  <Box m={6}>
-                    <a
-                      href={explorerUrl + txHash}
-                      target='_blank'
-                      rel='noreferrer'
-                    >
-                      <Text as='u'>View Tx on Flowscan</Text>
-                    </a>
-                  </Box>
-                </>
-              )}
-            </VStack>
           </Stack>
         </Center>
       </form>
