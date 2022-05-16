@@ -1,5 +1,4 @@
-const fcl = require('@onflow/fcl');
-// import * as fcl from '@onflow/fcl';
+const fcl = require('@onflow/fcl'); // Using import causes an error.
 import * as types from '@onflow/types';
 
 fcl.config({
