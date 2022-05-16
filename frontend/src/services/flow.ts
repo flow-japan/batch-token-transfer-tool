@@ -6,7 +6,7 @@ fcl.config({
   'discovery.wallet': process.env.NEXT_PUBLIC_NETWORK == 'mainnet' ? "https://fcl-discovery.onflow.org/authn" : 'https://fcl-discovery.onflow.org/testnet/authn',
   'app.detail.title': 'Batch Token Transfer Tool',
   'app.detail.icon':
-    'https://batch-token-transfer-tool-dev.vercel.app/logo.png',
+    'https://batch-token-transfer-tool.vercel.app/logo.png',
 });
 
 const fungibleTokenAddress =
