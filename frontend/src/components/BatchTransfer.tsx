@@ -180,19 +180,19 @@ const BatchTransfer = () => {
           <Stack spacing={4} padding={4} width={'400px'}>
             {userAccount ? (
               <>
-                <Box as='p'>
+                <Box>
                   <Heading as='h5' size='sm'>
                     Address
                   </Heading>{' '}
                   {userAccount.address}
                 </Box>
-                <Box as='p'>
+                <Box>
                   <Heading as='h5' size='sm'>
                     Balance
                   </Heading>{' '}
                   {Number(userAccount.balance['FLOW'])} FLOW,{' '}
                   {Number(userAccount.balance['FUSD'])} FUSD
-                  <Box as='p'>
+                  <Box>
                     <Button
                       marginTop={4}
                       colorScheme='gray'
