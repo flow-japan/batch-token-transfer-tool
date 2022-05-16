@@ -8,7 +8,7 @@ fcl.config({
   'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn', // Mainnet: "https://fcl-discovery.onflow.org/authn"
   'app.detail.title': 'Batch Token Transfer Tool',
   'app.detail.icon':
-    'https://batch-token-transfer-tool-dev.vercel.app/favicon.ico',
+    'https://batch-token-transfer-tool-dev.vercel.app/logo.png',
 });
 
 const connectWallet = async () => {
