@@ -17,7 +17,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
-import { sendFLOW, waitTx } from '../services/flow';
+import { logout, sendFT, waitTx } from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
 
 const BatchTransfer = () => {
@@ -128,6 +128,20 @@ const BatchTransfer = () => {
                   </Heading>{' '}
                   {Number(userAccount.balance['FLOW'])} FLOW,{' '}
                   {Number(userAccount.balance['FUSD'])} FUSD
+                  <Box as='p'>
+                    <Button
+                      marginTop={4}
+                      colorScheme='gray'
+                      size={'md'}
+                      variant='link'
+                      onClick={() => {
+                        logout();
+                        setUserAccount(null);
+                      }}
+                    >
+                      Use another account
+                    </Button>
+                  </Box>
                 </Box>
                 <Box as='kbd'></Box>
               </>
