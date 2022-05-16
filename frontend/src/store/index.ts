@@ -3,8 +3,7 @@ import { atom } from 'recoil';
 type UserAccount = {
   address: string;
   dotFindName: string;
-  balanceFLOW: string;
-  balanceFUSD: string;
+  balance: { [index: string]: string }
 };
 
 export const userAccountState = atom<UserAccount | null>({

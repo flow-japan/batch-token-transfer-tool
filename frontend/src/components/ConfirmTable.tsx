@@ -33,14 +33,21 @@ const ConfirmTable: React.FC<{
           </Tr>
         </Thead>
         <Tbody>
-          {props.toAddresses.map((toAddress, index) => {
-            return (
-              <Tr key={index}>
-                <Td>{toAddress}</Td>
-                <Td textAlign='right'>{props.amounts[index]}</Td>
-              </Tr>
-            );
-          })}
+          {props.toAddresses.length > 0 ? (
+            props.toAddresses.map((toAddress, index) => {
+              return (
+                <Tr key={index}>
+                  <Td>{toAddress}</Td>
+                  <Td textAlign='right'>{props.amounts[index]}</Td>
+                </Tr>
+              );
+            })
+          ) : (
+            <Tr>
+              <Td>―</Td>
+              <Td textAlign='right'>―</Td>
+            </Tr>
+          )}
         </Tbody>
         <Tfoot>
           <Tr>
@@ -49,7 +56,7 @@ const ConfirmTable: React.FC<{
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>{props.totalAmount.toString()}</Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  FLOW
+                  {props.currency}
                 </Text>
               </Flex>
             </Th>
@@ -59,10 +66,12 @@ const ConfirmTable: React.FC<{
             <Th>
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>
-                  {new BigNumber(userAccount?.balanceFLOW || 0).toString()}
+                  {new BigNumber(
+                    userAccount?.balance[props.currency] || 0
+                  ).toString()}
                 </Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  FLOW
+                  {props.currency}
                 </Text>
               </Flex>
             </Th>
@@ -73,7 +82,7 @@ const ConfirmTable: React.FC<{
               <Flex justifyContent={'right'}>
                 <Text fontSize='sm'>{props.remaining.toString()}</Text>
                 <Text fontSize='xs' paddingLeft={1}>
-                  FLOW
+                  {props.currency}
                 </Text>
               </Flex>
             </Th>

@@ -12,8 +12,10 @@ const ConnectButton = () => {
     setUserAccount({
       address: account.addr,
       dotFindName: '', // TODO:
-      balanceFLOW: Number(balances[0]).toFixed(8),
-      balanceFUSD: Number(balances[1]).toFixed(8),
+      balance: {
+        FLOW: Number(balances[0]).toFixed(8),
+        FUSD: Number(balances[1]).toFixed(8),
+      },
     });
   };
 

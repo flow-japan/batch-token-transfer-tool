@@ -11,6 +11,7 @@ import {
   Text,
   FormControl,
   FormLabel,
+  Select,
   Divider,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -29,6 +30,7 @@ const BatchTransfer = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [userAccount] = useRecoilState(userAccountState);
+  const [currency, setCurrency] = useState('FLOW');
   const [toAddresses, setToAddresses] = useState<string[]>([]);
   const [amounts, setAmounts] = useState<string[]>([]);
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
@@ -41,7 +43,7 @@ const BatchTransfer = () => {
     setToAddresses([]);
     setAmounts([]);
     setTotalAmount(new BigNumber(0.0));
-    setRemaining(new BigNumber(userAccount?.balanceFLOW || 0));
+    setRemaining(new BigNumber(userAccount?.balance[currency] || 0));
   };
 
   const loadToAddressesAndAmounts = (recipientsAndAmountsStr: string) => {
@@ -76,7 +78,7 @@ const BatchTransfer = () => {
       new BigNumber(0.0)
     );
     setTotalAmount(totalAmount);
-    const remaining = new BigNumber(userAccount?.balanceFLOW || 0).minus(
+    const remaining = new BigNumber(userAccount?.balance[currency] || 0).minus(
       totalAmount
     );
     setRemaining(remaining);
@@ -124,16 +126,38 @@ const BatchTransfer = () => {
                   <Heading as='h5' size='sm'>
                     Balance
                   </Heading>{' '}
-                  {Number(userAccount.balanceFLOW)} FLOW,{' '}
-                  {Number(userAccount.balanceFUSD)} FUSD
+                  {Number(userAccount.balance['FLOW'])} FLOW,{' '}
+                  {Number(userAccount.balance['FUSD'])} FUSD
                 </Box>
                 <Box as='kbd'></Box>
               </>
             ) : null}
             <FormControl isInvalid={errors.email} className='mt-10'>
+              <FormLabel htmlFor='currency'>
+                <Heading as='h5' size='sm'>
+                  Currency
+                </Heading>{' '}
+              </FormLabel>
+              <Select
+                id='currency'
+                mb={6}
+                size={'md'}
+                onChange={(e) => {
+                  const _currency = e.target.value;
+                  setCurrency(_currency);
+                  setRemaining(
+                    new BigNumber(userAccount?.balance[_currency] || 0).minus(
+                      totalAmount
+                    )
+                  );
+                }}
+              >
+                <option value='FLOW'>FLOW</option>
+                <option value='FSUD'>FUSD</option>
+              </Select>
               <FormLabel htmlFor='addresses'>
                 <Heading as='h5' size='sm'>
-                  Recipients & Amounts (FLOW)
+                  Recipients & Amounts in {currency}
                 </Heading>{' '}
               </FormLabel>
               <Textarea
@@ -158,6 +182,7 @@ const BatchTransfer = () => {
                 amounts={amounts}
                 totalAmount={totalAmount}
                 remaining={remaining}
+                currency={currency}
               />
             </Box>
             <Divider />
@@ -179,7 +204,7 @@ const BatchTransfer = () => {
                 disabled={!!errorText}
                 type='submit'
               >
-                {checkDone ? 'Send FLOW' : 'Check'}
+                {checkDone ? `Send ${currency}` : 'Check'}
               </Button>
             </Center>
             <VStack>
