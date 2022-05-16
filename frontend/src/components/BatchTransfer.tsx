@@ -153,7 +153,7 @@ const BatchTransfer = () => {
                 }}
               >
                 <option value='FLOW'>FLOW</option>
-                <option value='FSUD'>FUSD</option>
+                <option value='FUSD'>FUSD</option>
               </Select>
               <FormLabel htmlFor='addresses'>
                 <Heading as='h5' size='sm'>
