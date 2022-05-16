@@ -160,6 +160,7 @@ const BatchTransfer = () => {
     loadToAddressesAndAmounts('');
   }, []);
 
+  //  on submit
   useEffect(() => {
     if (!txHash) {
       return
