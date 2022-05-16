@@ -163,7 +163,7 @@ const BatchTransfer = () => {
     <Box p={4} bg={'white'} shadow='md' rounded='md'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center>
-          <Stack spacing={4} padding={4} width={'400px'}>
+          <Stack spacing={4} padding={4} width={[320, 400, 500]}>
             {userAccount ? (
               <>
                 <Box as='p'>
