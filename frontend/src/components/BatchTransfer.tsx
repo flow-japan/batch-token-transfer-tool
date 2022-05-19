@@ -17,7 +17,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
-import { logout, sendFT, waitTx as transactionStatusPoller } from '../services/flow';
+import { logout, sendFT, getTxChannel } from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
 import SendButton from './SendButton';
 
@@ -165,7 +165,7 @@ const BatchTransfer = () => {
     if (!txHash) {
       return
     }
-    transactionStatusPoller(txHash).subscribe((x: any) => {
+    getTxChannel(txHash).subscribe((x: any) => {
       if(!x.status){
         return
       }
