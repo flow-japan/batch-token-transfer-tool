@@ -74,8 +74,8 @@ const sendTx = async (txCode: string, args: any) => {
   ]);
 };
 
-const waitTx = async (tx: any) => {
-  await fcl.tx(tx).onceSealed();
+const getTxChannel = (txid: string) => {
+  return fcl.tx(txid);
 };
 
 const sendFT = async (
@@ -115,4 +115,4 @@ transaction(toAddresses: [Address], amounts: [UFix64]) {
   return await sendTx(txCode, args);
 };
 
-export { connectWallet, logout, getBalances, sendFT, waitTx };
+export { connectWallet, logout, getBalances, sendFT, getTxChannel };
