@@ -64,6 +64,10 @@ const explorerUrl =
     ? 'https://flowscan.org/transaction/'
     : 'https://testnet.flowscan.org/transaction/';
 
+const isValidAddress = (address: string): boolean => {
+  return !!address.match(/^0x[0-9a-f]{16}$/)
+}
+
 const BatchTransfer = () => {
   const {
     handleSubmit,
@@ -117,10 +121,18 @@ const BatchTransfer = () => {
       new BigNumber(0.0)
     );
     setTotalAmount(totalAmount);
+
     const remaining = new BigNumber(
       userAccount?.balance[currency.symbol] || 0
     ).minus(totalAmount);
     setRemaining(remaining);
+
+    for(let address of toAddresses) {
+      if (!isValidAddress(address)) {
+        setErrorText(`Invalid address '${address}'`);
+        return
+      }
+    }
 
     if (remaining.lt(0)) {
       setErrorText('Total exceeds balance');
