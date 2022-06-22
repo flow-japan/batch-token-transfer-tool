@@ -11,6 +11,7 @@ import {
   TableContainer,
   Text,
   Flex,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
@@ -76,12 +77,16 @@ const ConfirmTable: React.FC<{
             outputs.map((output, index) => {
               return (
                 <Tr key={index}>
-                  <Td color={output.addressError ? 'red' : 'black'}>
-                    {output.address}
-                  </Td>
-                  <Td color={output.amountError ? 'red' : 'black'} textAlign='right'>
-                    {output.amount}
-                  </Td>
+                  <Tooltip label={output.addressError ?? ''} placement='left' isOpen bg='red.500' hasArrow>
+                    <Td color={output.addressError ? 'red' : 'black'} fontWeight={output.addressError ? 'bold' : 'normal'}>
+                      {output.address}
+                    </Td>
+                  </Tooltip>
+                  <Tooltip label={output.amountError ?? ''} placement='right' isOpen bg='red.500' hasArrow>
+                    <Td color={output.amountError ? 'red' : 'black'} textAlign='right' fontWeight={output.amountError ? 'bold' : 'normal'}>
+                      {output.amount}
+                    </Td>
+                  </Tooltip>
                 </Tr>
               );
             })

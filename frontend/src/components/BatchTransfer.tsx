@@ -186,7 +186,6 @@ const BatchTransfer = () => {
     }
     const syncAccount = async () => {
       const balances = await getBalances(userAccount?.address)
-      console.log(balances)
       setUserAccount({
         address: userAccount.address,
         dotFindName: '', // TODO:
