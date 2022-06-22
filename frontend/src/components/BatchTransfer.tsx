@@ -30,6 +30,9 @@ const explorerUrl =
     : 'https://testnet.flowscan.org/transaction/';
 
 const isValidAddress = (address: string): boolean => {
+  if(!address) {
+    return false;
+  }
   return !!address.match(/^0x[0-9a-f]{16}$/)
 }
 
@@ -90,7 +93,7 @@ const BatchTransfer = () => {
     ).minus(totalAmount);
     setRemaining(remaining);
 
-    let addressErrors: ValidationError[] = []
+    const addressErrors: ValidationError[] = []
     for(let i=0; i<outputs.length;i++) {
       if (!isValidAddress(outputs[i].address)) {
         addressErrors.push({
