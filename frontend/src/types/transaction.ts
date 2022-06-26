@@ -1,5 +1,5 @@
 export type Output = {
-  address: string,
-  amount: number,
-  amountStr: string,
-}
+  address: string;
+  amount: number;
+  amountStr: string;
+};

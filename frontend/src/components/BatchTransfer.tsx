@@ -30,11 +30,11 @@ const explorerUrl =
     : 'https://testnet.flowscan.org/transaction/';
 
 const isValidAddress = (address: string): boolean => {
-  if(!address) {
+  if (!address) {
     return false;
   }
-  return !!address.match(/^0x[0-9a-f]{16}$/)
-}
+  return !!address.match(/^0x[0-9a-f]{16}$/);
+};
 
 const BatchTransfer = () => {
   const {
@@ -44,16 +44,18 @@ const BatchTransfer = () => {
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [currency, setCurrency] = useState(FLOWCurrency);
   const [outputsTemplate, setOutputsTemplate] = useState(''); // text area
-  const [outputs, setOutputs] = useState<Output[]>([])
-  
+  const [outputs, setOutputs] = useState<Output[]>([]);
+
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
-  
+
   const [remaining, setRemaining] = useState<BigNumber>(new BigNumber(0.0));
   const [txHash, setTxHash] = useState('');
-  const [txStatus, setTxStatus] = useState(-1)
-  
+  const [txStatus, setTxStatus] = useState(-1);
+
   const [errorText, setErrorText] = useState('');
-  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
+    []
+  );
   const [checkDone, setCheckDone] = useState(false);
 
   const resetConfirm = () => {
@@ -71,8 +73,8 @@ const BatchTransfer = () => {
         const [toAddress, amountStr] = recipientsAndAmount
           .split(/[ ,]+/)
           .filter((v) => !!v);
-        
-        const amount = Number(amountStr || 0)
+
+        const amount = Number(amountStr || 0);
         const output: Output = {
           address: toAddress,
           amount: amount,
@@ -82,10 +84,12 @@ const BatchTransfer = () => {
       });
     setOutputs(outputs);
 
-    const totalAmount = outputs.map(x => x.amount).reduce(
-      (sum, amount) => sum.plus(new BigNumber(amount)),
-      new BigNumber(0.0)
-    );
+    const totalAmount = outputs
+      .map((x) => x.amount)
+      .reduce(
+        (sum, amount) => sum.plus(new BigNumber(amount)),
+        new BigNumber(0.0)
+      );
     setTotalAmount(totalAmount);
 
     const remaining = new BigNumber(
@@ -93,8 +97,8 @@ const BatchTransfer = () => {
     ).minus(totalAmount);
     setRemaining(remaining);
 
-    const addressErrors: ValidationError[] = []
-    for(let i=0; i<outputs.length;i++) {
+    const addressErrors: ValidationError[] = [];
+    for (let i = 0; i < outputs.length; i++) {
       if (!isValidAddress(outputs[i].address)) {
         addressErrors.push({
           index: i,
@@ -109,7 +113,7 @@ const BatchTransfer = () => {
           message: 'negative amount',
         });
       }
-      if ((outputs[i].amountStr == 'NaN')) {
+      if (outputs[i].amountStr == 'NaN') {
         addressErrors.push({
           index: i,
           type: 'amount',
@@ -119,9 +123,13 @@ const BatchTransfer = () => {
     }
 
     setValidationErrors(addressErrors);
-    if(addressErrors.length > 0) {
-      setErrorText(`${addressErrors.length} error${addressErrors.length == 1 ? '': 's'} found`);
-      return
+    if (addressErrors.length > 0) {
+      setErrorText(
+        `${addressErrors.length} error${
+          addressErrors.length == 1 ? '' : 's'
+        } found`
+      );
+      return;
     }
 
     if (remaining.lt(0)) {
@@ -141,15 +149,15 @@ const BatchTransfer = () => {
       try {
         setErrorText('');
         const tx = await sendFT(
-          outputs.map(x => x.address),
-          outputs.map(x => x.amountStr),
+          outputs.map((x) => x.address),
+          outputs.map((x) => x.amountStr),
           currency.contractName,
           currency.address,
           currency.vaultStoragePath,
           currency.vaultPublicPath
         );
         setTxHash(tx.transactionId);
-        setTxStatus(0)  // reset to 0
+        setTxStatus(0); // reset to 0
       } catch (e) {
         console.log('error:', e);
         setErrorText(String(e));
@@ -171,24 +179,24 @@ const BatchTransfer = () => {
   //  on txHash changed
   useEffect(() => {
     if (!txHash) {
-      return
+      return;
     }
     getTxChannel(txHash).subscribe((x: any) => {
-      if(!x.status){
-        return
+      if (!x.status) {
+        return;
       }
-      console.log(`tx status[${x.status}]:`, x)
-      setTxStatus(x.status)
-    })
-  }, [txHash])
+      console.log(`tx status[${x.status}]:`, x);
+      setTxStatus(x.status);
+    });
+  }, [txHash]);
 
   // on currency changed or tx status changed
   useEffect(() => {
     if (!userAccount) {
-      return
+      return;
     }
     const syncAccount = async () => {
-      const balances = await getBalances(userAccount?.address)
+      const balances = await getBalances(userAccount?.address);
       setUserAccount({
         address: userAccount.address,
         dotFindName: '', // TODO:
@@ -196,10 +204,10 @@ const BatchTransfer = () => {
           FLOW: Number(balances[0]).toFixed(8),
           FUSD: Number(balances[1]).toFixed(8),
         },
-      })
-    }
-    syncAccount()
-  }, [currency, txStatus])
+      });
+    };
+    syncAccount();
+  }, [currency, txStatus]);
 
   return (
     <Box p={4} bg={'white'} shadow='md' rounded='md'>
@@ -290,8 +298,8 @@ const BatchTransfer = () => {
             </Heading>{' '}
             <Box as='div'>
               <ConfirmTable
-                toAddresses={outputs.map(x => x.address)}
-                amounts={outputs.map(x => x.amountStr)}
+                toAddresses={outputs.map((x) => x.address)}
+                amounts={outputs.map((x) => x.amountStr)}
                 totalAmount={totalAmount}
                 remaining={remaining}
                 currencySymbol={currency.symbol}
@@ -317,7 +325,7 @@ const BatchTransfer = () => {
                 checkDone={checkDone}
                 symbol={currency.symbol}
                 explorerUrl={explorerUrl}
-                />
+              />
             </Center>
           </Stack>
         </Center>

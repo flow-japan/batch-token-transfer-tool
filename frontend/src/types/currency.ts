@@ -1,4 +1,3 @@
-
 export type Currency = {
   symbol: string;
   contractName: string;
@@ -6,7 +5,7 @@ export type Currency = {
   vaultStoragePath: string;
   vaultPublicPath: string;
 };
-  
+
 export const FLOWCurrency: Currency = {
   symbol: 'FLOW',
   contractName: 'FlowToken',
@@ -17,7 +16,7 @@ export const FLOWCurrency: Currency = {
   vaultStoragePath: '/storage/flowTokenVault',
   vaultPublicPath: '/public/flowTokenReceiver',
 };
-  
+
 export const CustomCurrency: Currency = {
   symbol: '',
   contractName: '',
@@ -25,7 +24,7 @@ export const CustomCurrency: Currency = {
   vaultStoragePath: '',
   vaultPublicPath: '',
 };
-  
+
 export const FUSDCurrency: Currency = {
   symbol: 'FUSD',
   contractName: 'FUSD',
