@@ -43,7 +43,7 @@ const BatchTransfer = () => {
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [currency, setCurrency] = useState(FLOWCurrency);
-  const [txTemplate, setTxTemplate] = useState(''); // text area
+  const [outputsTemplate, setOutputsTemplate] = useState(''); // text area
   const [outputs, setOutputs] = useState<Output[]>([])
   
   const [totalAmount, setTotalAmount] = useState<BigNumber>(new BigNumber(0.0));
@@ -161,12 +161,12 @@ const BatchTransfer = () => {
   useEffect(() => {
     setErrorText('');
     setCheckDone(false);
-    if (!txTemplate) {
+    if (!outputsTemplate) {
       resetConfirm();
       return;
     }
-    loadToAddressesAndAmounts(txTemplate);
-  }, [txTemplate, userAccount]);
+    loadToAddressesAndAmounts(outputsTemplate);
+  }, [outputsTemplate, userAccount]);
 
   //  on txHash changed
   useEffect(() => {
@@ -280,7 +280,7 @@ const BatchTransfer = () => {
                 mb={2}
                 size={'md'}
                 onChange={(e) => {
-                  setTxTemplate(e.target.value);
+                  setOutputsTemplate(e.target.value);
                 }}
               />
             </FormControl>
