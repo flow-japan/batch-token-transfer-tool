@@ -2,11 +2,16 @@ const fcl = require('@onflow/fcl'); // Using import causes an error.
 import * as types from '@onflow/types';
 
 fcl.config({
-  'accessNode.api': process.env.NEXT_PUBLIC_NETWORK == 'mainnet' ? 'https://rest-mainnet.onflow.org' : 'https://rest-testnet.onflow.org',
-  'discovery.wallet': process.env.NEXT_PUBLIC_NETWORK == 'mainnet' ? "https://fcl-discovery.onflow.org/authn" : 'https://fcl-discovery.onflow.org/testnet/authn',
+  'accessNode.api':
+    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+      ? 'https://rest-mainnet.onflow.org'
+      : 'https://rest-testnet.onflow.org',
+  'discovery.wallet':
+    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
+      ? 'https://fcl-discovery.onflow.org/authn'
+      : 'https://fcl-discovery.onflow.org/testnet/authn',
   'app.detail.title': 'Batch Token Transfer Tool',
-  'app.detail.icon':
-    'https://batch-token-transfer-tool.vercel.app/logo.png',
+  'app.detail.icon': 'https://batch-token-transfer-tool.vercel.app/logo.png',
 });
 
 const fungibleTokenAddress =
@@ -84,7 +89,7 @@ const sendFT = async (
   currencyContractName: string,
   currencyAddress: string,
   currencyVaultStoragePath: string,
-  currencyVaultPublicPath: string,
+  currencyVaultPublicPath: string
 ): Promise<any> => {
   const txCode = `
 import FungibleToken from ${fungibleTokenAddress}
