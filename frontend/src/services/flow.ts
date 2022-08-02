@@ -120,4 +120,40 @@ transaction(toAddresses: [Address], amounts: [UFix64]) {
   return await sendTx(txCode, args);
 };
 
-export { connectWallet, logout, getBalances, sendFT, getTxChannel };
+const hasVault = async (
+  address: string,
+  currencyContractName: string,
+  currenctBlancePathName: string,
+): Promise<boolean> => {
+  const script = `
+import FungibleToken from ${fungibleTokenAddress}
+import ${currencyContractName} from ${fusdAddress}
+
+pub fun main(address: Address): Bool {
+  let acct = getAccount(address)
+
+  let cap = acct.getCapability(/public/${currenctBlancePathName}) ?? nil
+  if cap == nil {
+    return false
+  }
+
+  let vaultRef = cap.borrow<&${currencyContractName}.Vault{FungibleToken.Balance}>()
+
+  return vaultRef != nil
+}`;
+
+  const res = await fcl.query({
+    cadence: script,
+    args: (arg: any) => [arg(address, types.Address)],
+  });
+
+  return res;
+}
+
+const hasFusdVault = async (
+  address: string
+): Promise<boolean> => {
+  return await hasVault(address, 'FUSD', 'fusdBalance');
+}
+
+export { connectWallet, logout, getBalances, sendFT, getTxChannel, hasVault, hasFusdVault };
