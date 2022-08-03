@@ -122,17 +122,18 @@ transaction(toAddresses: [Address], amounts: [UFix64]) {
 
 const hasVault = async (
   address: string,
+  currencyContractAddress: string,
   currencyContractName: string,
   currenctBlancePathName: string,
 ): Promise<boolean> => {
   const script = `
 import FungibleToken from ${fungibleTokenAddress}
-import ${currencyContractName} from ${fusdAddress}
+import ${currencyContractName} from ${currencyContractAddress}
 
 pub fun main(address: Address): Bool {
   let acct = getAccount(address)
 
-  let cap = acct.getCapability(/public/${currenctBlancePathName}) ?? nil
+  let cap = acct.getCapability(/public/${currenctBlancePathName})
   if cap == nil {
     return false
   }
@@ -153,7 +154,7 @@ pub fun main(address: Address): Bool {
 const hasFusdVault = async (
   address: string
 ): Promise<boolean> => {
-  return await hasVault(address, 'FUSD', 'fusdBalance');
+  return await hasVault(address, fusdAddress, 'FUSD', 'fusdBalance');
 }
 
 export { connectWallet, logout, getBalances, sendFT, getTxChannel, hasVault, hasFusdVault };
