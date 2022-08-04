@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Center,
   Heading,
@@ -17,7 +17,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
-import { logout, sendFT, getTxChannel, getBalances } from '../services/flow';
+import { logout, sendFT, getTxChannel, getBalances, hasFlowVault, hasVault } from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
 import SendButton from './SendButton';
 import { ValidationError } from 'types/error';
@@ -137,13 +137,65 @@ const BatchTransfer = () => {
     }
   };
 
+  const validateOutputsOnChain = useCallback(async () => {
+    const addressErrors: ValidationError[] = [];
+
+    const exists = await hasFlowVault(outputs.map(x => x.address))
+    console.log('exists', exists)
+    exists.map((ok, i) => {
+      if(!ok) {
+        addressErrors.push({
+          index: i,
+          type: 'address',
+          message: 'address not exist'
+        })
+      }
+    })
+
+    if(currency.symbol !== FLOWCurrency.symbol) {
+      const pathIdentifier = currency.vaultPublicPath.split('/')[2]
+      if(!pathIdentifier) {
+        setErrorText(`Token's vault public path is wrong`);
+        return false
+      }
+      const hasReceivers = await hasVault(outputs.map(x => x.address), currency.address, currency.contractName, pathIdentifier)
+      hasReceivers.map((ok, i) => {
+        if(!ok) {
+          if(addressErrors.filter(x => x.index == i).length == 0) {
+            addressErrors.push({
+              index: i,
+              type: 'address',
+              message: `doesn't have vault for ${currency.symbol}`
+            })
+          }
+        }
+      })
+    }
+
+    setValidationErrors(addressErrors);
+    if (addressErrors.length > 0) {
+      setErrorText(
+        `${addressErrors.length} error${
+          addressErrors.length == 1 ? '' : 's'
+        } found`
+      );
+      return false;
+    }
+    return true
+  }, [outputs, currency])
+
   const onSubmit = async () => {
     if (!checkDone) {
-      // TODO: Check if the address exists and has Vault.
       if (totalAmount.eq(0)) {
         setErrorText('Total is zero');
         return;
       }
+
+      const receiverCheck = await validateOutputsOnChain()
+      if(!receiverCheck) {
+        return
+      }
+
       setCheckDone(true);
     } else {
       try {

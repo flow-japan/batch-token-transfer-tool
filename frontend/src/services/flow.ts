@@ -125,7 +125,7 @@ const hasVault = async (
   currencyContractAddress: string,
   currencyContractName: string,
   currenctBlancePathName: string,
-): Promise<boolean> => {
+): Promise<boolean[]> => {
   const script = `
 import FungibleToken from ${fungibleTokenAddress}
 import ${currencyContractName} from ${currencyContractAddress}
@@ -159,13 +159,13 @@ pub fun main(addresses: [Address]): [Bool] {
 
 const hasFlowVault = async (
   addresses: string[]
-): Promise<boolean> => {
+): Promise<boolean[]> => {
   return await hasVault(addresses, flowTokenAddress, 'FlowToken', 'flowTokenBalance');
 }
 
 const hasFusdVault = async (
   addresses: string[]
-): Promise<boolean> => {
+): Promise<boolean[]> => {
   return await hasVault(addresses, fusdAddress, 'FUSD', 'fusdBalance');
 }
 
