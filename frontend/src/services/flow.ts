@@ -157,10 +157,16 @@ pub fun main(addresses: [Address]): [Bool] {
   return res;
 }
 
+const hasFlowVault = async (
+  addresses: string[]
+): Promise<boolean> => {
+  return await hasVault(addresses, flowTokenAddress, 'FlowToken', 'flowTokenBalance');
+}
+
 const hasFusdVault = async (
   addresses: string[]
 ): Promise<boolean> => {
   return await hasVault(addresses, fusdAddress, 'FUSD', 'fusdBalance');
 }
 
-export { connectWallet, logout, getBalances, sendFT, getTxChannel, hasVault, hasFusdVault };
+export { connectWallet, logout, getBalances, sendFT, getTxChannel, hasVault, hasFlowVault, hasFusdVault };
