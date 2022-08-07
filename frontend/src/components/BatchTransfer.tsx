@@ -12,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Select,
+  Input,
   Divider,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -26,6 +27,7 @@ type Currency = {
   address: string;
   vaultStoragePath: string;
   vaultPublicPath: string;
+  isCustom: boolean;
 };
 
 const FLOWCurrency: Currency = {
@@ -37,14 +39,7 @@ const FLOWCurrency: Currency = {
       : '0x7e60df042a9c0868',
   vaultStoragePath: '/storage/flowTokenVault',
   vaultPublicPath: '/public/flowTokenReceiver',
-};
-
-const CustomCurrency: Currency = {
-  symbol: '',
-  contractName: '',
-  address: '',
-  vaultStoragePath: '',
-  vaultPublicPath: '',
+  isCustom: false,
 };
 
 const FUSDCurrency: Currency = {
@@ -56,6 +51,16 @@ const FUSDCurrency: Currency = {
       : '0xe223d8a629e49c68',
   vaultStoragePath: '/storage/fusdVault',
   vaultPublicPath: '/public/fusdReceiver',
+  isCustom: false,
+};
+
+const CustomCurrency: Currency = {
+  symbol: '',
+  contractName: '',
+  address: '',
+  vaultStoragePath: '',
+  vaultPublicPath: '',
+  isCustom: true,
 };
 
 const explorerUrl =
@@ -129,6 +134,12 @@ const BatchTransfer = () => {
 
   const onSubmit = async () => {
     if (!checkDone) {
+      // TODO: implement
+      if (currency.isCustom) {
+        alert('Custom currency feature is under development');
+        return;
+      }
+
       // TODO: Check if the address exists and has Vault.
       if (totalAmount.eq(0)) {
         setErrorText('Total is zero');
@@ -204,7 +215,6 @@ const BatchTransfer = () => {
               </FormLabel>
               <Select
                 id='currency'
-                mb={6}
                 size={'md'}
                 onChange={(e) => {
                   const currencySymbol = e.target.value;
@@ -224,8 +234,95 @@ const BatchTransfer = () => {
               >
                 <option value='FLOW'>FLOW</option>
                 <option value='FUSD'>FUSD</option>
+                <option value='Custom'>Custom ...</option>
               </Select>
-              <FormLabel htmlFor='addresses'>
+
+              {currency.isCustom ? (
+                <Box as='div' ml={8}>
+                  <FormLabel htmlFor='customCurrencySymbol' mt={4}>
+                    <Heading size='sm'>Symbol</Heading>
+                  </FormLabel>
+                  <Input
+                    id='customCurrencySymbol'
+                    placeholder='FLOW'
+                    size={'md'}
+                    onChange={(e) => {
+                      setCurrency({ ...currency, symbol: e.target.value });
+                    }}
+                  />
+                  <FormLabel htmlFor='customCurrencyContractName' mt={2}>
+                    <Heading size='sm'>Contract Name</Heading>
+                  </FormLabel>
+                  <Input
+                    id='customCurrencyContractName'
+                    placeholder='FlowToken'
+                    size={'md'}
+                    onChange={(e) => {
+                      setCurrency({
+                        ...currency,
+                        contractName: e.target.value,
+                      });
+                    }}
+                  />
+                  <FormLabel htmlFor='customCurrencyAddress' mt={2}>
+                    <Heading size='sm'>Address</Heading>
+                  </FormLabel>
+                  <Input
+                    id='customCurrencyAddress'
+                    placeholder='0x1654653399040a61'
+                    size={'md'}
+                    onChange={(e) => {
+                      setCurrency({
+                        ...currency,
+                        address: e.target.value,
+                      });
+                    }}
+                  />
+                  <FormLabel htmlFor='customCurrencyVaultStoragePath' mt={2}>
+                    <Heading size='sm'>Vault Storage Path</Heading>
+                  </FormLabel>
+                  <Input
+                    id='customCurrencyVaultStoragePath'
+                    placeholder='/storage/flowTokenVault'
+                    size={'md'}
+                    onChange={(e) => {
+                      setCurrency({
+                        ...currency,
+                        vaultStoragePath: e.target.value,
+                      });
+                    }}
+                  />
+                  <FormLabel htmlFor='customCurrencyVaultPublicPath' mt={2}>
+                    <Heading size='sm'>Vault Public Path</Heading>
+                  </FormLabel>
+                  <Input
+                    id='customCurrencyVaultPublicPath'
+                    placeholder='/public/flowTokenReceiver'
+                    size={'md'}
+                    onChange={(e) => {
+                      setCurrency({
+                        ...currency,
+                        vaultPublicPath: e.target.value,
+                      });
+                    }}
+                  />
+                  <Button
+                    mt={6}
+                    mb={4}
+                    colorScheme='gray'
+                    variant='outline'
+                    size={'md'}
+                    onClick={() => {
+                      // TODO: implement
+                      alert('Custom currency feature is under development');
+                    }}
+                  >
+                    Check Balance
+                  </Button>
+                </Box>
+              ) : null}
+
+              <FormLabel htmlFor='addresses' mt={4}>
                 <Heading as='h5' size='sm'>
                   Recipients & Amounts in {currency.symbol}
                 </Heading>{' '}
