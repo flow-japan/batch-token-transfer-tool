@@ -1,7 +1,7 @@
 export type Currency = {
   symbol: string;
   contractName: string;
-  address: string;
+  addresses: { mainnet: string; testnet: string; };
   vaultStoragePath: string;
   vaultPublicPath: string;
 };
@@ -9,10 +9,10 @@ export type Currency = {
 export const FLOWCurrency: Currency = {
   symbol: 'FLOW',
   contractName: 'FlowToken',
-  address:
-    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
-      ? '0x1654653399040a61'
-      : '0x7e60df042a9c0868',
+  addresses: {
+    mainnet: '0x1654653399040a61',
+    testnet: '0x7e60df042a9c0868',
+  },
   vaultStoragePath: '/storage/flowTokenVault',
   vaultPublicPath: '/public/flowTokenReceiver',
 };
@@ -20,7 +20,7 @@ export const FLOWCurrency: Currency = {
 export const CustomCurrency: Currency = {
   symbol: '',
   contractName: '',
-  address: '',
+  addresses: { mainnet: '', testnet: '' },
   vaultStoragePath: '',
   vaultPublicPath: '',
 };
@@ -28,10 +28,10 @@ export const CustomCurrency: Currency = {
 export const FUSDCurrency: Currency = {
   symbol: 'FUSD',
   contractName: 'FUSD',
-  address:
-    process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
-      ? '0x3c5959b568896393'
-      : '0xe223d8a629e49c68',
+  addresses: {
+    mainnet: '0x3c5959b568896393',
+    testnet: '0xe223d8a629e49c68',
+  },
   vaultStoragePath: '/storage/fusdVault',
   vaultPublicPath: '/public/fusdReceiver',
 };

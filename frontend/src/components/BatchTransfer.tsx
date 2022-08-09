@@ -16,18 +16,26 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { userAccountState } from '../store';
-import { logout, sendFT, getTxChannel, getBalances, hasFlowVault, hasVault } from '../services/flow';
+import { userAccountState, networkState } from '../store';
+import {
+  logout,
+  sendFT,
+  getTxChannel,
+  getBalances,
+  hasFlowVault,
+  hasVault,
+} from '../services/flow';
 import ConfirmTable from '../components/ConfirmTable';
 import SendButton from './SendButton';
 import { ValidationError } from 'types/error';
 import { CustomCurrency, FLOWCurrency, FUSDCurrency } from 'types/currency';
 import { Output } from 'types/transaction';
 
-const explorerUrl =
-  process.env.NEXT_PUBLIC_NETWORK == 'mainnet'
-    ? 'https://flowscan.org/transaction/'
-    : 'https://testnet.flowscan.org/transaction/';
+const explorerUrls = {
+  mainnet: 'https://flowscan.org/transaction/',
+  // testnet: 'https://testnet.flowscan.org/transaction/',
+  testnet: 'https://flow-view-source.com/testnet/tx/',
+};
 
 const isValidAddress = (address: string): boolean => {
   if (!address) {
@@ -42,6 +50,7 @@ const BatchTransfer = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
+  const [network, setNetwork] = useRecoilState(networkState);
   const [currency, setCurrency] = useState(FLOWCurrency);
   const [outputsTemplate, setOutputsTemplate] = useState(''); // text area
   const [outputs, setOutputs] = useState<Output[]>([]);
@@ -140,36 +149,44 @@ const BatchTransfer = () => {
   const validateOutputsOnChain = useCallback(async () => {
     const addressErrors: ValidationError[] = [];
 
-    const exists = await hasFlowVault(outputs.map(x => x.address))
-    console.log('exists', exists)
+    const exists = await hasFlowVault(
+      outputs.map((x) => x.address),
+      network?.network
+    );
+    console.log('exists', exists);
     exists.map((ok, i) => {
-      if(!ok) {
+      if (!ok) {
         addressErrors.push({
           index: i,
           type: 'address',
-          message: 'address not exist'
-        })
+          message: 'address not exist',
+        });
       }
-    })
+    });
 
-    if(currency.symbol !== FLOWCurrency.symbol) {
-      const pathIdentifier = currency.vaultPublicPath.split('/')[2]
-      if(!pathIdentifier) {
+    if (currency.symbol !== FLOWCurrency.symbol) {
+      const pathIdentifier = currency.vaultPublicPath.split('/')[2];
+      if (!pathIdentifier) {
         setErrorText(`Token's vault public path is wrong`);
-        return false
+        return false;
       }
-      const hasReceivers = await hasVault(outputs.map(x => x.address), currency.address, currency.contractName, pathIdentifier)
+      const hasReceivers = await hasVault(
+        outputs.map((x) => x.address),
+        currency.addresses[network?.network || 'testnet'],
+        currency.contractName,
+        pathIdentifier
+      );
       hasReceivers.map((ok, i) => {
-        if(!ok) {
-          if(addressErrors.filter(x => x.index == i).length == 0) {
+        if (!ok) {
+          if (addressErrors.filter((x) => x.index == i).length == 0) {
             addressErrors.push({
               index: i,
               type: 'address',
-              message: `doesn't have vault for ${currency.symbol}`
-            })
+              message: `doesn't have vault for ${currency.symbol}`,
+            });
           }
         }
-      })
+      });
     }
 
     setValidationErrors(addressErrors);
@@ -181,8 +198,8 @@ const BatchTransfer = () => {
       );
       return false;
     }
-    return true
-  }, [outputs, currency])
+    return true;
+  }, [outputs, currency]);
 
   const onSubmit = async () => {
     if (!checkDone) {
@@ -191,9 +208,9 @@ const BatchTransfer = () => {
         return;
       }
 
-      const receiverCheck = await validateOutputsOnChain()
-      if(!receiverCheck) {
-        return
+      const receiverCheck = await validateOutputsOnChain();
+      if (!receiverCheck) {
+        return;
       }
 
       setCheckDone(true);
@@ -204,7 +221,7 @@ const BatchTransfer = () => {
           outputs.map((x) => x.address),
           outputs.map((x) => x.amountStr),
           currency.contractName,
-          currency.address,
+          currency.addresses[network?.network || 'testnet'],
           currency.vaultStoragePath,
           currency.vaultPublicPath
         );
@@ -376,7 +393,7 @@ const BatchTransfer = () => {
                 disabled={!!errorText}
                 checkDone={checkDone}
                 symbol={currency.symbol}
-                explorerUrl={explorerUrl}
+                explorerUrl={explorerUrls[network?.network || 'testnet']}
               />
             </Center>
           </Stack>
