@@ -5,7 +5,7 @@ import { connectWallet, getBalances } from '../services/flow';
 
 const ConnectButton = () => {
   const [, setUserAccount] = useRecoilState(userAccountState);
-  const [network, setNetwork] = useRecoilState(networkState);
+  const [network] = useRecoilState(networkState);
 
   const connect = async () => {
     const account = await connectWallet(network?.network);

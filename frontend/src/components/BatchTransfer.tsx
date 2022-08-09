@@ -50,7 +50,7 @@ const BatchTransfer = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
-  const [network, setNetwork] = useRecoilState(networkState);
+  const [network] = useRecoilState(networkState);
   const [currency, setCurrency] = useState(FLOWCurrency);
   const [outputsTemplate, setOutputsTemplate] = useState(''); // text area
   const [outputs, setOutputs] = useState<Output[]>([]);
