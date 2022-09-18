@@ -3,6 +3,7 @@
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 10px;
+  border-width: 1.5px;
   overflow: hidden;
   table-layout: fixed;
   width: 100%;
@@ -10,14 +11,14 @@
 }
 @media screen and (max-width: 768px) {
   .table {
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
 }
 .table .thead .th,
 .table .tbody .th,
 .table .tbody .td {
   padding: 1.3em 1.3em;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1.5px solid #aaa;
   word-wrap: break-word;
   hyphens: auto;
   font-family: 'IBM Plex Mono';
@@ -38,7 +39,7 @@
 }
 .table .thead .th + .th,
 .table .tbody .td {
-  border-left: 1px solid #aaa;
+  border-left: 1.5px solid #aaa;
 }
 .table .tbody .tr:last-child .th,
 .table .tbody .tr:last-child .td {

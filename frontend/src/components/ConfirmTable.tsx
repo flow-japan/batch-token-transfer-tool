@@ -41,6 +41,9 @@ const ConfirmTable: React.FC<{
     }
 
     for (const err of props.errors) {
+      if (err.index >= outputs.length) {
+        return;
+      }
       if (err.type == 'address') {
         outputs[err.index].addressError = err.message;
       } else {

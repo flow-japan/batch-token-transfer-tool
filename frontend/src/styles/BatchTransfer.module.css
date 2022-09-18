@@ -47,6 +47,7 @@
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 10px;
+  border-width: 1.5px;
   overflow: hidden;
   table-layout: fixed;
   width: 100%;
@@ -61,7 +62,7 @@
 .table .tbody .th,
 .table .tbody .td {
   padding: 1.3em 1.3em;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1.5px solid #aaa;
   word-wrap: break-word;
   hyphens: auto;
   font-family: 'IBM Plex Mono';
@@ -82,11 +83,96 @@
 }
 .table .thead .th + .th,
 .table .tbody .td {
-  border-left: 1px solid #aaa;
+  border-left: 1.5px solid #aaa;
 }
 .table .tbody .tr:last-child .th,
 .table .tbody .tr:last-child .td {
   border-bottom: none;
+}
+
+.table .tbody .recipientsTh {
+  padding: 1.3em 1.3em 0em;
+  border-bottom: none;
+}
+.table .tbody .tr:last-child .recipientsTh {
+  padding-bottom: 1.3em;
+}
+
+.recipientInput {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+}
+
+.recipientErrorMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  color: #fb2416;
+  padding-left: 5px;
+}
+
+.addRecipientButton {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  background-color: #000;
+  border-radius: 10px;
+  border-width: 1.5px;
+
+  color: #e5fff4;
+  border-color: #e5fff4;
+
+  padding: 16px;
+  height: 57px;
+  font-size: 18px;
+  line-height: 23.4px;
+}
+@media screen and (max-width: 768px) {
+  .addRecipientButton {
+    padding: 12px;
+    height: 39px;
+    font-size: 12px;
+    line-height: 15.6px;
+  }
+}
+.addRecipientButton:hover {
+  color: #00ef8a;
+  border-color: #00ef8a;
+}
+
+.removeRecipientButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  background-color: #000;
+  border-radius: 100%;
+  border-width: 1.5px;
+
+  color: #e5fff4;
+  border-color: #e5fff4;
+
+  padding: 16px;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+@media screen and (max-width: 768px) {
+  .removeRecipientButton {
+    padding: 10px;
+    width: 14px;
+    height: 14px;
+    font-size: 12px;
+  }
+}
+.removeRecipientButton:hover {
+  color: #00ef8a;
+  border-color: #00ef8a;
 }
 
 .sendButtonsBox {

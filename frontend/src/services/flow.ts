@@ -146,6 +146,10 @@ pub fun main(addresses: [Address]): [Bool] {
 
   for address in addresses {
     let acct = getAccount(address)
+    if acct == nil {
+      res.append(false)
+      continue
+    }
 
     let cap = acct.getCapability(/public/${currenctBlancePathName})
     if cap == nil {
