@@ -32,11 +32,20 @@ const connectWallet = async (network: string = 'testnet') => {
     .put('0xFUNGIBLETOKEN', fungibleTokenAddresses[network])
     .put('0xFLOWTOKEN', flowTokenAddresses[network])
     .put('0xFUSD', fusdAddresses[network])
-  const account = await fcl.authenticate();
-  if (!account.loggedIn) {
+  try {
+    await fcl.authenticate();
+  } catch (e) {
+    console.log(e);
     return null;
   }
-  return account;
+  return new Promise<any>((resolve, _reject) => {
+    fcl.currentUser().subscribe((currentUser: any) => {
+      if (!currentUser || !currentUser.loggedIn) {
+        resolve(null);
+      }
+      resolve(currentUser)
+    })
+  });
 };
 
 const logout = async () => {

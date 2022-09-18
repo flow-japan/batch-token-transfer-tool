@@ -1,0 +1,28 @@
+.box {
+  min-height: 127px;
+}
+@media screen and (max-width: 768px) {
+  .box {
+    min-height: 85px;
+  }
+}
+
+.connectButtonBox {
+  margin: 24px;
+}
+@media screen and (max-width: 768px) {
+  .connectButtonBox {
+    margin: 16px;
+  }
+}
+
+.logo {
+  margin-left: 24px;
+  height: 48px;
+}
+@media screen and (max-width: 768px) {
+  .logo {
+    margin-left: 16px;
+    height: 32px;
+  }
+}

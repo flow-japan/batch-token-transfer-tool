@@ -1,18 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import React, { useMemo } from 'react';
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Text,
-  Flex,
-  Tooltip,
-} from '@chakra-ui/react';
+import styles from '../styles/ConfirmTable.module.css';
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
 import { ValidationError } from 'types/error';
@@ -64,99 +52,38 @@ const ConfirmTable: React.FC<{
   }, [props.errors, props.toAddresses, props.amounts]);
 
   return (
-    <TableContainer>
-      <Table variant='unstyled' size='sm'>
-        <Thead>
-          <Tr>
-            <Th>address</Th>
-            <Th textAlign='right'>amount</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {outputs.length > 0 ? (
-            outputs.map((output, index) => {
-              return (
-                <Tr key={index}>
-                  <Tooltip
-                    label={output.addressError ?? ''}
-                    placement='left'
-                    isOpen
-                    bg='red.500'
-                    hasArrow
-                  >
-                    <Td
-                      color={output.addressError ? 'red' : 'black'}
-                      fontWeight={output.addressError ? 'bold' : 'normal'}
-                    >
-                      {output.address}
-                    </Td>
-                  </Tooltip>
-                  <Tooltip
-                    label={output.amountError ?? ''}
-                    placement='right'
-                    isOpen
-                    bg='red.500'
-                    hasArrow
-                  >
-                    <Td
-                      color={output.amountError ? 'red' : 'black'}
-                      textAlign='right'
-                      fontWeight={output.amountError ? 'bold' : 'normal'}
-                    >
-                      {output.amount}
-                    </Td>
-                  </Tooltip>
-                </Tr>
-              );
-            })
-          ) : (
-            <Tr>
-              <Td>―</Td>
-              <Td textAlign='right'>―</Td>
-            </Tr>
-          )}
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>Total</Th>
-            <Th>
-              <Flex justifyContent={'right'}>
-                <Text fontSize='sm'>{props.totalAmount.toString()}</Text>
-                <Text fontSize='xs' paddingLeft={1}>
-                  {props.currencySymbol}
-                </Text>
-              </Flex>
-            </Th>
-          </Tr>
-          <Tr>
-            <Th>Your Balance</Th>
-            <Th>
-              <Flex justifyContent={'right'}>
-                <Text fontSize='sm'>
-                  {new BigNumber(
-                    userAccount?.balance[props.currencySymbol] || 0
-                  ).toString()}
-                </Text>
-                <Text fontSize='xs' paddingLeft={1}>
-                  {props.currencySymbol}
-                </Text>
-              </Flex>
-            </Th>
-          </Tr>
-          <Tr>
-            <Th>Remaining</Th>
-            <Th>
-              <Flex justifyContent={'right'}>
-                <Text fontSize='sm'>{props.remaining.toString()}</Text>
-                <Text fontSize='xs' paddingLeft={1}>
-                  {props.currencySymbol}
-                </Text>
-              </Flex>
-            </Th>
-          </Tr>
-        </Tfoot>
-      </Table>
-    </TableContainer>
+    <table className={styles.table}>
+      <tbody className={styles.tbody}>
+        <tr className={styles.tr}>
+          <th align='left' className={styles.th}>
+            TOTAL
+          </th>
+          <td align='right' className={styles.td}>
+            {props.totalAmount.toFormat() + ' ' + props.currencySymbol}
+          </td>
+        </tr>
+        <tr className={styles.tr}>
+          <th align='left' className={styles.th}>
+            CURRENT BALANCE
+          </th>
+          <td align='right' className={styles.td}>
+            {new BigNumber(
+              userAccount?.balance[props.currencySymbol] || 0
+            ).toFormat() +
+              ' ' +
+              props.currencySymbol}
+          </td>
+        </tr>
+        <tr className={styles.tr}>
+          <th align='left' className={styles.th}>
+            BALANCE AFTER TRANSFER
+          </th>
+          <td align='right' className={styles.td}>
+            {props.remaining.toFormat() + ' ' + props.currencySymbol}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 

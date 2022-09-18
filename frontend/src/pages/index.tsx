@@ -1,8 +1,10 @@
 import type { NextPage } from 'next';
-import { Center } from '@chakra-ui/react';
-import NetworkSwitchTab from '../components/NetworkSwitchTab';
-import ConnectButton from '../components/ConnectButton';
+import { Container } from '@chakra-ui/react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import BatchTransfer from '../components/BatchTransfer';
+import Landing from '../components/Landing';
+
 import { useRecoilState } from 'recoil';
 import { userAccountState } from '../store';
 
@@ -11,10 +13,9 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <Center>
-        <NetworkSwitchTab />
-      </Center>
-      <Center>{!userAccount ? <ConnectButton /> : <BatchTransfer />}</Center>
+      <Header />
+      {!userAccount ? <Landing /> : <BatchTransfer />}
+      <Footer />
     </div>
   );
 };

@@ -1,0 +1,27 @@
+.connectButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: #000;
+  background-color: #00ef8a;
+  border-radius: 10px;
+
+  padding: 24px;
+  height: 79px;
+  font-size: 24px;
+  line-height: 31.2px;
+}
+@media screen and (max-width: 768px) {
+  .connectButton {
+    padding: 16px;
+    height: 53px;
+    font-size: 16px;
+    line-height: 15.6px;
+  }
+}
+.connectButton:hover {
+  background-color: #e5fff4;
+}
