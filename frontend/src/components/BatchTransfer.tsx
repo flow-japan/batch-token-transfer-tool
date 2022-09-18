@@ -82,16 +82,45 @@ const BatchTransfer = () => {
   };
 
   const updateRecipient = (index: number, address: string) => {
-    const newOutputs = [...outputs];
-    newOutputs[index].address = address;
-    setOutputs(newOutputs);
+    if (!!address.match(/.+[, \t].+/)) {
+      // Support batch pasting of CSV text
+      const csvStr = address;
+      const newOutputs: Output[] = [];
+
+      const chunkArray = ([...array], size = 1) => {
+        return array.reduce(
+          (acc, _value, index) =>
+            index % size ? acc : [...acc, array.slice(index, index + size)],
+          []
+        );
+      };
+
+      chunkArray(
+        csvStr.split(/,| |\t|\r\n|\n/).filter((v) => !!v),
+        2
+      ).map((recipientsAndAmount) => {
+        const [toAddress, amountStr] = recipientsAndAmount;
+        newOutputs.push({
+          address: toAddress,
+          amount: Number(amountStr || 0),
+          amountStr,
+        });
+      });
+      const temp = [...outputs];
+      temp.splice(index, temp.length);
+      setOutputs([...temp, ...newOutputs]);
+    } else {
+      const newOutputs = [...outputs];
+      newOutputs[index].address = address;
+      setOutputs(newOutputs);
+    }
   };
 
   const updateAmount = (index: number, amountStr: string) => {
     const amount = Number(amountStr || 0);
     const newOutputs = [...outputs];
     newOutputs[index].amount = amount;
-    newOutputs[index].amountStr = amount.toFixed(8).toString();
+    newOutputs[index].amountStr = amountStr;
     setOutputs(newOutputs);
   };
 
@@ -125,7 +154,7 @@ const BatchTransfer = () => {
           message: 'negative amount',
         });
       }
-      if (outputs[i].amountStr == 'NaN') {
+      if (isNaN(outputs[i].amountStr)) {
         addressErrors.push({
           index: i,
           type: 'amount',
@@ -376,7 +405,7 @@ const BatchTransfer = () => {
                     {'RECIPIENTS & AMOUNTS'}
                   </th>
                 </tr>
-                {outputs.map((_output, index) => {
+                {outputs.map((output, index) => {
                   let err: ValidationError | undefined;
                   if (validationErrors.length > 0) {
                     err = validationErrors.find(
@@ -400,6 +429,7 @@ const BatchTransfer = () => {
                               rounded={'md'}
                               focusBorderColor={'brand.500'}
                               borderWidth={'1.5px'}
+                              value={output.address}
                               onChange={(e) => {
                                 updateRecipient(index, e.target.value);
                               }}
@@ -420,6 +450,7 @@ const BatchTransfer = () => {
                               rounded={'md'}
                               focusBorderColor={'brand.500'}
                               borderWidth={'1.5px'}
+                              value={output.amountStr}
                               onChange={(e) => {
                                 updateAmount(index, e.target.value);
                               }}
@@ -434,6 +465,7 @@ const BatchTransfer = () => {
                                 rounded={'md'}
                                 focusBorderColor={'brand.500'}
                                 borderWidth={'1.5px'}
+                                value={output.amountStr}
                                 onChange={(e) => {
                                   updateAmount(index, e.target.value);
                                 }}
