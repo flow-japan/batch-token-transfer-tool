@@ -21,7 +21,7 @@ const fusdAddresses = {
   testnet: '0xe223d8a629e49c68'
 }
 
-const connectWallet = async (network: string = 'testnet') => {
+const connectWallet = async (network: string = 'testnet', setter: any) => {
   fcl.config()
     .put('accessNode.api', network === 'mainnet'
       ? 'https://rest-mainnet.onflow.org'
@@ -38,14 +38,7 @@ const connectWallet = async (network: string = 'testnet') => {
     console.log(e);
     return null;
   }
-  return new Promise<any>((resolve, _reject) => {
-    fcl.currentUser().subscribe((currentUser: any) => {
-      if (!currentUser || !currentUser.loggedIn) {
-        resolve(null);
-      }
-      resolve(currentUser)
-    })
-  });
+  fcl.currentUser().subscribe(setter);
 };
 
 const logout = async () => {

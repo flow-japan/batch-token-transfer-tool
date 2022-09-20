@@ -22,7 +22,7 @@ const ConfirmTable: React.FC<{
 }> = (props) => {
   const [userAccount] = useRecoilState(userAccountState);
 
-  const outputs = useMemo(() => {
+  useMemo(() => {
     const outputs: OutputWithError[] = [];
 
     if (props.toAddresses.length != props.amounts.length) {
