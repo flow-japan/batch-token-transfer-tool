@@ -3,7 +3,7 @@ import * as types from '@onflow/types';
 
 fcl.config({
   'app.detail.title': 'Batch Token Transfer Tool',
-  'app.detail.icon': 'https://batch-token-transfer-tool.vercel.app/logo.png',
+  'app.detail.icon': 'https://batch-token-transfer-tool.vercel.app/favicon.ico',
 });
 
 const fungibleTokenAddresses = {
