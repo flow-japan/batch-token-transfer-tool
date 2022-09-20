@@ -1,13 +1,14 @@
-import { Button } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { userAccountState, networkState } from '../store';
-import { connectWallet, getBalances } from '../services/flow';
+import { connectWallet, logout, getBalances } from '../services/flow';
+import styles from '../styles/ConnectButton.module.css';
 
 const ConnectButton = () => {
-  const [, setUserAccount] = useRecoilState(userAccountState);
+  const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [network] = useRecoilState(networkState);
 
   const connect = async () => {
+    await logout();
     const account = await connectWallet(network?.network);
     if (!account) {
       return;
@@ -23,10 +24,18 @@ const ConnectButton = () => {
     });
   };
 
+  const disconnect = async () => {
+    await logout();
+    setUserAccount(null);
+  };
+
   return (
-    <Button mt={4} colorScheme='blue' size='lg' onClick={connect}>
-      Connect Wallet
-    </Button>
+    <button
+      className={styles.connectButton}
+      onClick={!userAccount ? connect : disconnect}
+    >
+      {!userAccount ? 'CONNECT' : 'DISCONNECT'}
+    </button>
   );
 };
 

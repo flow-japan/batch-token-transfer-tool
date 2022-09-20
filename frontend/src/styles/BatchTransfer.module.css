@@ -1,0 +1,300 @@
+.box {
+  text-align: left;
+  max-width: 960px;
+  margin: 46px;
+  margin-top: 90px;
+}
+@media screen and (max-width: 768px) {
+  .box {
+    margin: 16px;
+    margin-top: 32px;
+  }
+}
+
+.h1 {
+  color: #00ef8a;
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 54px;
+  margin-bottom: 24px;
+}
+@media screen and (max-width: 768px) {
+  .h1 {
+    font-size: 24px;
+    line-height: 36px;
+    margin-bottom: 16px;
+  }
+}
+
+.h2 {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 36px;
+  margin-bottom: 48px;
+}
+@media screen and (max-width: 768px) {
+  .h2 {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+}
+
+.table {
+  border: 1px solid #aaa;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  border-width: 1.5px;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 48px;
+}
+@media screen and (max-width: 768px) {
+  .table {
+    margin-bottom: 16px;
+  }
+}
+.table .thead .th,
+.table .tbody .th,
+.table .tbody .td {
+  padding: 1.3em 1.3em;
+  border-bottom: 1.5px solid #aaa;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-family: 'IBM Plex Mono';
+  font-size: 18px;
+  line-height: 23px;
+}
+@media screen and (max-width: 768px) {
+  .table .thead .th,
+  .table .tbody .th,
+  .table .tbody .td {
+    font-size: 12px;
+    line-height: 15.6px;
+  }
+}
+.th {
+  text-align: 'left';
+  font-weight: 700;
+}
+.table .thead .th + .th,
+.table .tbody .td {
+  border-left: 1.5px solid #aaa;
+}
+.table .tbody .tr:last-child .th,
+.table .tbody .tr:last-child .td {
+  border-bottom: none;
+}
+
+.table .tbody .recipientsTh {
+  padding: 1.3em 1.3em 0em;
+  border-bottom: none;
+}
+.table .tbody .tr:last-child .recipientsTh {
+  padding-bottom: 1.3em;
+}
+
+.recipientInput {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+}
+
+.recipientErrorMessage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  color: #fb2416;
+  padding-left: 5px;
+}
+
+.addRecipientButton {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  background-color: #000;
+  border-radius: 10px;
+  border-width: 1.5px;
+
+  color: #e5fff4;
+  border-color: #e5fff4;
+
+  padding: 16px;
+  height: 57px;
+  font-size: 18px;
+  line-height: 23.4px;
+}
+@media screen and (max-width: 768px) {
+  .addRecipientButton {
+    padding: 12px;
+    height: 39px;
+    font-size: 12px;
+    line-height: 15.6px;
+  }
+}
+.addRecipientButton:hover {
+  color: #00ef8a;
+  border-color: #00ef8a;
+}
+
+.removeRecipientButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  background-color: #000;
+  border-radius: 100%;
+  border-width: 1.5px;
+
+  color: #e5fff4;
+  border-color: #e5fff4;
+
+  padding: 16px;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+@media screen and (max-width: 768px) {
+  .removeRecipientButton {
+    padding: 10px;
+    width: 14px;
+    height: 14px;
+    font-size: 12px;
+  }
+}
+.removeRecipientButton:hover {
+  color: #00ef8a;
+  border-color: #00ef8a;
+}
+
+.sendButtonsBox {
+  margin-bottom: 48px;
+}
+@media screen and (max-width: 768px) {
+  .sendButtonsBox {
+    margin-bottom: 32px;
+  }
+}
+
+.sendTokenButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: #000;
+  background-color: #00ef8a;
+  border-radius: 10px;
+
+  padding: 24px;
+  height: 79px;
+  font-size: 24px;
+  line-height: 31.2px;
+}
+@media screen and (max-width: 768px) {
+  .sendTokenButton {
+    padding: 16px;
+    height: 53px;
+    font-size: 16px;
+    line-height: 15.6px;
+  }
+}
+.sendTokenButton:hover {
+  background-color: #e5fff4;
+}
+.sendTokenButton:disabled,
+.sendTokenButton[disabled] {
+  background-color: #00663c;
+  cursor: not-allowed;
+}
+
+.switchAccountButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: #00ef8a;
+  background-color: #000;
+  border-radius: 10px;
+  border-width: 1.5px;
+  border-color: #00ef8a;
+
+  padding: 24px;
+  height: 79px;
+  font-size: 24px;
+  line-height: 31.2px;
+}
+@media screen and (max-width: 768px) {
+  .switchAccountButton {
+    padding: 16px;
+    height: 53px;
+    font-size: 16px;
+    line-height: 15.6px;
+  }
+}
+.switchAccountButton:hover {
+  color: #e5fff4;
+  border-color: #e5fff4;
+}
+
+.messageBox {
+  width: 100%;
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+  border-width: 1px;
+  border-radius: 10px;
+  overflow: hidden;
+
+  padding: 24px;
+  font-size: 24px;
+  line-height: 31px;
+  margin-bottom: 48px;
+}
+@media screen and (max-width: 768px) {
+  .messageBox {
+    padding: 16px;
+    font-size: 16px;
+    line-height: 20.8px;
+    margin-bottom: 32px;
+  }
+}
+
+.errorMessage {
+  color: #fb2416;
+  border-color: #fb2416;
+  background-color: #320401;
+}
+
+.txSubmittedMessage {
+  color: #ffc300;
+  border-color: #ffc300;
+  background-color: #664e00;
+}
+
+.txCompletedMessage {
+  color: #00ef8a;
+  border-color: #00ef8a;
+  background-color: #00663c;
+}
+
+.bottomMargin {
+  margin-bottom: 48px;
+}
+@media screen and (max-width: 768px) {
+  .bottomMargin {
+    margin-bottom: 32px;
+  }
+}
