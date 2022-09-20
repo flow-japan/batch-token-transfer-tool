@@ -1,7 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Textarea,
   Box,
   VStack,
   SimpleGrid,
@@ -53,7 +52,7 @@ const BatchTransfer = () => {
   const [isSmallerThan768] = useMediaQuery('(max-width: 768px)');
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [network] = useRecoilState(networkState);
@@ -82,7 +81,7 @@ const BatchTransfer = () => {
   };
 
   const updateRecipient = (index: number, address: string) => {
-    if (!!address.match(/.+[, \t].+/)) {
+    if (address.match(/.+[, \t].+/)) {
       // Support batch pasting of CSV text
       const csvStr = address;
       const newOutputs: Output[] = [];
@@ -413,7 +412,7 @@ const BatchTransfer = () => {
                     );
                   }
                   return (
-                    <tr className={styles.tr}>
+                    <tr className={styles.tr} key={index}>
                       <th align='left' className={styles.recipientsTh}>
                         <SimpleGrid
                           columns={2}
@@ -435,7 +434,7 @@ const BatchTransfer = () => {
                               }}
                             />
 
-                            {!!err ? (
+                            {err ? (
                               <Text className={styles.recipientErrorMessage}>
                                 {err?.message}
                               </Text>
@@ -546,7 +545,7 @@ const BatchTransfer = () => {
                 <span style={{ fontSize: '80%', fontWeight: '700' }}>↗</span>
               </Link>
             </Box>
-          ) : !!txHash ? (
+          ) : txHash ? (
             <Box
               className={`${styles.messageBox} ${styles.txSubmittedMessage}`}
             >
@@ -555,7 +554,7 @@ const BatchTransfer = () => {
             </Box>
           ) : null}
 
-          {!!errorText ? (
+          {errorText ? (
             <Box className={`${styles.messageBox} ${styles.errorMessage}`}>
               {errorText}
             </Box>

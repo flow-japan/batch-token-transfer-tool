@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { Container } from '@chakra-ui/react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BatchTransfer from '../components/BatchTransfer';
