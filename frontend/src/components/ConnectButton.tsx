@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import { userAccountState, networkState } from '../store';
 import { connectWallet, logout, getBalances } from '../services/flow';
 import styles from '../styles/ConnectButton.module.css';
+import { useLocale } from 'locale/localeHook';
 
 type User = {
   loggedIn: boolean;
@@ -13,6 +14,7 @@ const ConnectButton = () => {
   const [user, setUser] = useState<User>({ loggedIn: false, addr: '' });
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [network] = useRecoilState(networkState);
+  const t = useLocale();
 
   const connect = async () => {
     await logout();
@@ -44,7 +46,7 @@ const ConnectButton = () => {
       className={styles.connectButton}
       onClick={!userAccount ? connect : disconnect}
     >
-      {!userAccount ? 'CONNECT' : 'DISCONNECT'}
+      {!userAccount ? t.CONNECT : t.DISCONNECT}
     </button>
   );
 };
