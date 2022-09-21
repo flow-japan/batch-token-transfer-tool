@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import en from './en'
 import zh from './en'
-import ja from './en'
+import ja from './ja'
 
 export const useLocale = () => {
     const { locale } = useRouter()
