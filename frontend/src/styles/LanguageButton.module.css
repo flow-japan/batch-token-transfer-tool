@@ -1,12 +1,12 @@
 
-.lang{
+.lang {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  flex-direction: row-reverse;
   align-items: center;
-  margin-bottom: 40px;
 }
 
-.lang.dropdown {
+.dropdown {
   position: relative;
   left: 0;
   display: none;
@@ -15,21 +15,10 @@
   list-style: none;
 }
 
-.lang:hover.dropdown {
+.lang:hover .dropdown {
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   align-items: center;
-}
-
-.lang:hover.dropdown.li {
-  margin: 0;
-  display: block;
-  padding: 5px 0;
-}
-
-.lang:hover.dropdown.li.div:hover {
-  width: 45px;
-  height: 45px;
 }
 
 .en{
