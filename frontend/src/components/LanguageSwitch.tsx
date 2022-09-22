@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { Lang } from "types/locale";
 import { localeState } from '../store';

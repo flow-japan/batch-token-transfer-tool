@@ -5,7 +5,7 @@ import zh from './zh'
 import ja from './ja'
 import { Lang } from 'types/locale';
 
-export const useLocale = (lang: Lang) => {
+export const getLocale = (lang: Lang) => {
     switch(lang) {
         case 'en':
             return en

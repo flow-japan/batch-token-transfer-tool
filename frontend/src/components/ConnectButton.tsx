@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { userAccountState, networkState, localeState } from '../store';
 import { connectWallet, logout, getBalances } from '../services/flow';
 import styles from '../styles/ConnectButton.module.css';
-import { useLocale } from 'locale/localeHook';
+import { getLocale } from 'locale/locale';
 
 type User = {
   loggedIn: boolean;
@@ -17,7 +17,7 @@ const ConnectButton = () => {
   const [lang] = useRecoilState(localeState);
 
   const t = useMemo(() => {
-    return useLocale(lang)
+    return getLocale(lang)
   }, [lang])
 
   const connect = async () => {
