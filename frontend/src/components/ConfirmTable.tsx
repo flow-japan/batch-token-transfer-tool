@@ -2,8 +2,9 @@ import { BigNumber } from 'bignumber.js';
 import React, { useMemo } from 'react';
 import styles from '../styles/ConfirmTable.module.css';
 import { useRecoilState } from 'recoil';
-import { userAccountState } from '../store';
+import { localeState, userAccountState } from '../store';
 import { ValidationError } from 'types/error';
+import { useLocale } from 'locale/localeHook';
 
 type OutputWithError = {
   address: string;
@@ -21,6 +22,11 @@ const ConfirmTable: React.FC<{
   errors: ValidationError[];
 }> = (props) => {
   const [userAccount] = useRecoilState(userAccountState);
+  const [lang] = useRecoilState(localeState);
+
+  const t = useMemo(() => {
+    return useLocale(lang)
+  }, [lang])
 
   useMemo(() => {
     const outputs: OutputWithError[] = [];
@@ -59,7 +65,7 @@ const ConfirmTable: React.FC<{
       <tbody className={styles.tbody}>
         <tr className={styles.tr}>
           <th align='left' className={styles.th}>
-            TOTAL
+            {t.TOTAL}
           </th>
           <td align='right' className={styles.td}>
             {props.totalAmount.toFormat() + ' ' + props.currencySymbol}
@@ -67,7 +73,7 @@ const ConfirmTable: React.FC<{
         </tr>
         <tr className={styles.tr}>
           <th align='left' className={styles.th}>
-            CURRENT BALANCE
+            {t.CURRENT_BALANCE}
           </th>
           <td align='right' className={styles.td}>
             {new BigNumber(
@@ -79,7 +85,7 @@ const ConfirmTable: React.FC<{
         </tr>
         <tr className={styles.tr}>
           <th align='left' className={styles.th}>
-            BALANCE AFTER TRANSFER
+            {t.BALANCE_AFTER_TR}
           </th>
           <td align='right' className={styles.td}>
             {props.remaining.toFormat() + ' ' + props.currencySymbol}

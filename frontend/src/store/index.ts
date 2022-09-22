@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { Lang } from 'types/locale';
 
 type UserAccount = {
   address: string;
@@ -19,3 +20,8 @@ export const networkState = atom<Network | null>({
   key: 'network',
   default: null,
 });
+
+export const localeState = atom<Lang>({
+  key: 'lang',
+  default: 'en'
+})

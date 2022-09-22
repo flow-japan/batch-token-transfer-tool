@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Box,
   VStack,
@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { userAccountState, networkState } from '../store';
+import { userAccountState, networkState, localeState } from '../store';
 import {
   logout,
   sendFT,
@@ -29,6 +29,7 @@ import styles from '../styles/BatchTransfer.module.css';
 import { ValidationError } from 'types/error';
 import { CustomCurrency, FLOWCurrency, FUSDCurrency } from 'types/currency';
 import { Output } from 'types/transaction';
+import { useLocale } from 'locale/localeHook';
 
 const explorerUrls = {
   mainnet: 'https://flowscan.org/transaction/',
@@ -56,6 +57,7 @@ const BatchTransfer = () => {
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [network] = useRecoilState(networkState);
+  const [lang] = useRecoilState(localeState);
   const [currency, setCurrency] = useState(FLOWCurrency);
   const [outputs, setOutputs] = useState<Output[]>([emptyOutput]);
 
@@ -69,6 +71,10 @@ const BatchTransfer = () => {
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
   );
+  
+  const t = useMemo(() => {
+    return useLocale(lang)
+  }, [lang])
 
   const addRecipientAndAmount = () => {
     setOutputs([...outputs, emptyOutput]);
@@ -143,21 +149,21 @@ const BatchTransfer = () => {
         addressErrors.push({
           index: i,
           type: 'address',
-          message: 'invalid address',
+          message: t.ERR_INVALID_ADDRESS,
         });
       }
       if (outputs[i].amount < 0) {
         addressErrors.push({
           index: i,
           type: 'amount',
-          message: 'negative amount',
+          message: t.ERR_NEGATIVE_AMOUNT,
         });
       }
       if (isNaN(outputs[i].amountStr)) {
         addressErrors.push({
           index: i,
           type: 'amount',
-          message: 'not number',
+          message: t.ERR_NOT_NUMBER,
         });
       }
     }
@@ -175,7 +181,7 @@ const BatchTransfer = () => {
     // }
 
     if (remaining.lt(0)) {
-      setErrorText('Error: Total exceeds balance');
+      setErrorText(t.ERR_TOTAL_TOO_LARGE);
     }
   };
 
@@ -189,7 +195,7 @@ const BatchTransfer = () => {
           addressErrors.push({
             index: i,
             type: 'address',
-            message: 'invalid address',
+            message: t.ERR_INVALID_ADDRESS,
           });
         }
       });
@@ -203,7 +209,7 @@ const BatchTransfer = () => {
         addressErrors.push({
           index: i,
           type: 'address',
-          message: 'address not exist',
+          message: t.ERR_UNKNOWN_ADDRESS,
         });
       }
     });
@@ -211,7 +217,7 @@ const BatchTransfer = () => {
     if (currency.symbol !== FLOWCurrency.symbol) {
       const pathIdentifier = currency.vaultPublicPath.split('/')[2];
       if (!pathIdentifier) {
-        setErrorText(`Error: Token's vault public path is wrong`);
+        setErrorText(t.ERR_WRONG_VAULT_PATH);
         return false;
       }
       const hasReceivers = await hasVault(
@@ -226,7 +232,7 @@ const BatchTransfer = () => {
             addressErrors.push({
               index: i,
               type: 'address',
-              message: `doesn't have vault for ${currency.symbol}`,
+              message: t.ERR_VAULT_NOT_OWNED(currency.symbol),
             });
           }
         }
@@ -248,7 +254,7 @@ const BatchTransfer = () => {
 
   const onSubmit = async () => {
     if (totalAmount.eq(0)) {
-      setErrorText('Error: Total is zero');
+      setErrorText(t.ERR_TOTAL_ZERO);
       return;
     }
 
@@ -318,26 +324,21 @@ const BatchTransfer = () => {
     <>
       <VStack align={'center'}>
         <Box className={styles.box}>
-          <Text className={styles.h1}>Tranfer Flow</Text>
+          <Text className={styles.h1}>{t.TRANSFER_FLOW}</Text>
           <Text className={styles.h2}>
-            The Flow Token Transfer Tool allows for a user to easily set up and
-            automate transfers to multiple Flow wallet addresses from a single
-            Flow wallet address.
+            {t.DESC_1}
           </Text>
           <Text className={styles.h2}>
-            Useful to anyone who manages a community or works with multiple
-            collaborators, this tool saves users the time required to initiate
-            transfers individually to large groups of people, by enabling you to
-            do them all at once.
+            {t.DESC_2}
           </Text>
 
-          <Text className={styles.h1}>Your Wallet</Text>
+          <Text className={styles.h1}>{t.YOUR_WALLET}</Text>
 
           <table className={styles.table}>
             <tbody className={styles.tbody}>
               <tr className={styles.tr}>
                 <th align='left' className={styles.th}>
-                  ADDRESS
+                  {t.ADDRESS}
                 </th>
                 <td align='right' className={styles.td}>
                   {userAccount?.address}
@@ -345,7 +346,7 @@ const BatchTransfer = () => {
               </tr>
               <tr className={styles.tr}>
                 <th align='left' className={styles.th}>
-                  BALANCE
+                  {t.BALANCE}
                 </th>
                 <td align='right' className={styles.td}>
                   {Number(userAccount ? userAccount?.balance['FLOW'] : '-')}{' '}
@@ -359,13 +360,13 @@ const BatchTransfer = () => {
             </tbody>
           </table>
 
-          <Text className={styles.h1}>Transaction</Text>
+          <Text className={styles.h1}>{t.TRANSACTION}</Text>
           <FormControl>
             <table className={styles.table}>
               <tbody className={styles.tbody}>
                 <tr className={styles.tr}>
                   <th align='left' className={styles.th}>
-                    TOKEN
+                    {t.TOKEN}
                   </th>
                 </tr>
                 <tr className={styles.tr}>
@@ -401,7 +402,7 @@ const BatchTransfer = () => {
                 </tr>
                 <tr className={styles.tr}>
                   <th align='left' className={styles.th}>
-                    {'RECIPIENTS & AMOUNTS'}
+                    {t.RECI_AMOUNT}
                   </th>
                 </tr>
                 {outputs.map((output, index) => {
@@ -488,7 +489,7 @@ const BatchTransfer = () => {
                       className={styles.addRecipientButton}
                       onClick={addRecipientAndAmount}
                     >
-                      ADD RECIPIENT +
+                      {t.ADD_RECIPIENT}
                     </button>
                   </th>
                 </tr>
@@ -496,7 +497,7 @@ const BatchTransfer = () => {
             </table>
           </FormControl>
 
-          <Text className={styles.h1}>Transaction Details</Text>
+          <Text className={styles.h1}>{t.TX_DETAIL}</Text>
           <ConfirmTable
             toAddresses={outputs.map((x) => x.address)}
             amounts={outputs.map((x) => x.amountStr)}
@@ -517,7 +518,7 @@ const BatchTransfer = () => {
                       setUserAccount(null);
                     }}
                   >
-                    SWITCH ACCOUNT
+                    {t.SWITHC_ACCT}
                   </button>
 
                   <button
@@ -525,7 +526,7 @@ const BatchTransfer = () => {
                     type='submit'
                     disabled={validationErrors.length > 0 || isSubmitting}
                   >
-                    {!isSubmitting ? 'SEND TOKENS' : <Spinner />}
+                    {!isSubmitting ? t.SEND_TOKENS : <Spinner />}
                   </button>
                 </SimpleGrid>
               </form>
@@ -536,12 +537,12 @@ const BatchTransfer = () => {
             <Box
               className={`${styles.messageBox} ${styles.txCompletedMessage}`}
             >
-              <Text>YOUR TRANSACTION WAS COMPLETED.</Text>
+              <Text>{t.TX_COMPLETED}</Text>
               <Link
                 href={explorerUrls[network?.network || 'testnet'] + txHash}
                 isExternal
               >
-                VIEW ON FLOWSCAN{' '}
+                {t.LINK_TO_EXPLORER}{' '}
                 <span style={{ fontSize: '80%', fontWeight: '700' }}>↗</span>
               </Link>
             </Box>
@@ -549,8 +550,8 @@ const BatchTransfer = () => {
             <Box
               className={`${styles.messageBox} ${styles.txSubmittedMessage}`}
             >
-              <Text>YOUR TRANSACTION IS IN PROGRESS.</Text>
-              <Text>THIS PROCESS CAN TAKE UP TO A MINUTE.</Text>
+              <Text>{t.TX_PENDING}</Text>
+              <Text>{t.TX_PENDING_SUB}</Text>
             </Box>
           ) : null}
 
