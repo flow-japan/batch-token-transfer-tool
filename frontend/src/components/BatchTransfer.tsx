@@ -29,7 +29,7 @@ import styles from '../styles/BatchTransfer.module.css';
 import { ValidationError } from 'types/error';
 import { CustomCurrency, FLOWCurrency, FUSDCurrency } from 'types/currency';
 import { Output } from 'types/transaction';
-import { useLocale } from 'locale/localeHook';
+import { getLocale } from 'locale/locale';
 
 const explorerUrls = {
   mainnet: 'https://flowscan.org/transaction/',
@@ -73,7 +73,7 @@ const BatchTransfer = () => {
   );
   
   const t = useMemo(() => {
-    return useLocale(lang)
+    return getLocale(lang)
   }, [lang])
 
   const addRecipientAndAmount = () => {
@@ -232,7 +232,7 @@ const BatchTransfer = () => {
             addressErrors.push({
               index: i,
               type: 'address',
-              message: t.ERR_VAULT_NOT_OWNED(currency.symbol),
+              message: t.errVaultNotOwned(currency.symbol),
             });
           }
         }

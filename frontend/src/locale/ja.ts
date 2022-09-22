@@ -6,7 +6,7 @@ export default {
     ERR_TOTAL_TOO_LARGE:"合計送金額が残高を超えています",
     ERR_UNKNOWN_ADDRESS:"存在しないアドレスです",
     ERR_WRONG_VAULT_PATH:"トークンVaultの公開パスが無効です",
-    ERR_VAULT_NOT_OWNED: (currencySymbol: string) => `${currencySymbol} トークンのVaultを所有していません`,
+    errVaultNotOwned: (currencySymbol: string) => `${currencySymbol} トークンのVaultを所有していません`,
     ERR_TOTAL_ZERO:"合計が0です",
     DESC_1:"RAINDROPによってFlowトークンの一斉送金が簡単に行えるようになります",
     DESC_2:"みんなへの報酬送付。一人ひとりに送っていませんか？",

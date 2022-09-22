@@ -6,7 +6,7 @@ export default {
     ERR_TOTAL_TOO_LARGE:"资金不足",
     ERR_UNKNOWN_ADDRESS:"此名称尚未设置地址",
     ERR_WRONG_VAULT_PATH:"此公开PATH有问题。请更改。",
-    ERR_VAULT_NOT_OWNED: (currencySymbol: string) => `${currencySymbol} 您的地址没有此代币的Vault`,
+    errVaultNotOwned: (currencySymbol: string) => `${currencySymbol} 您的地址没有此代币的Vault`,
     ERR_TOTAL_ZERO:"Error: Total is zero",
     DESC_1:"The Flow Token Transfer Tool allows for a user to easily set up and automate transfers to multiple Flow wallet addresses from a single Flow wallet address.",
     DESC_2:"Useful to anyone who manages a community or works with multiple collaborators, this tool saves users the time required to initiate transfers individually to large groups of people, by enabling you to do them all at once.",
