@@ -20,7 +20,7 @@ export default {
     RECI_AMOUNT:"接受人 & 数额",
     ADD_RECIPIENT:"添加",
     TX_DETAIL:"交易内容",
-    SWITHC_ACCT:"账户",
+    SWITHC_ACCT:"选择账户",
     SEND_TOKENS:"发送代币",
     LINK_TO_EXPLORER:"在FLOWSCAN上查看",
     TX_PENDING:"交易在处理...",
