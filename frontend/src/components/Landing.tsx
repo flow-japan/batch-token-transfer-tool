@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, VStack, Text } from '@chakra-ui/react';
 import styles from '../styles/Landing.module.css';
 import { useLocale } from 'locale/localeHook';
+import { useRecoilState } from 'recoil';
+import { localeState } from 'store';
 
 const Landing = () => {
-  const t = useLocale()
+  const [lang] = useRecoilState(localeState);
+
+  const t = useMemo(() => {
+    return useLocale(lang)
+  }, [lang])
 
   return (
     <Box className={styles.box}>

@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Box,
   VStack,
@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { userAccountState, networkState } from '../store';
+import { userAccountState, networkState, localeState } from '../store';
 import {
   logout,
   sendFT,
@@ -57,6 +57,7 @@ const BatchTransfer = () => {
   } = useForm();
   const [userAccount, setUserAccount] = useRecoilState(userAccountState);
   const [network] = useRecoilState(networkState);
+  const [lang] = useRecoilState(localeState);
   const [currency, setCurrency] = useState(FLOWCurrency);
   const [outputs, setOutputs] = useState<Output[]>([emptyOutput]);
 
@@ -70,7 +71,10 @@ const BatchTransfer = () => {
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
   );
-  const t = useLocale()
+  
+  const t = useMemo(() => {
+    return useLocale(lang)
+  }, [lang])
 
   const addRecipientAndAmount = () => {
     setOutputs([...outputs, emptyOutput]);

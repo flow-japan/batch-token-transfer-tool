@@ -2,7 +2,7 @@ import { BigNumber } from 'bignumber.js';
 import React, { useMemo } from 'react';
 import styles from '../styles/ConfirmTable.module.css';
 import { useRecoilState } from 'recoil';
-import { userAccountState } from '../store';
+import { localeState, userAccountState } from '../store';
 import { ValidationError } from 'types/error';
 import { useLocale } from 'locale/localeHook';
 
@@ -22,8 +22,11 @@ const ConfirmTable: React.FC<{
   errors: ValidationError[];
 }> = (props) => {
   const [userAccount] = useRecoilState(userAccountState);
+  const [lang] = useRecoilState(localeState);
 
-  const t = useLocale();
+  const t = useMemo(() => {
+    return useLocale(lang)
+  }, [lang])
 
   useMemo(() => {
     const outputs: OutputWithError[] = [];
