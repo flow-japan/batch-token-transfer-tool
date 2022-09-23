@@ -17,7 +17,7 @@ const ConnectButton = () => {
   const [lang] = useRecoilState(localeState);
 
   const t = useMemo(() => {
-    return useLocale(lang);
+    return getLocale(lang);
   }, [lang]);
 
   const connect = async () => {
