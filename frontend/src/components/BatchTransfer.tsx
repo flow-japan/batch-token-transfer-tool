@@ -73,7 +73,7 @@ const BatchTransfer = () => {
   );
 
   const t = useMemo(() => {
-    return useLocale(lang);
+    return getLocale(lang);
   }, [lang]);
 
   const addRecipientAndAmount = () => {

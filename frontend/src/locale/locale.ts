@@ -6,7 +6,7 @@ import ja from './ja'
 import { Lang } from 'types/locale';
 
 export const getLocale = (lang: Lang) => {
-    switch(lang) {
+    switch (lang) {
         case 'en':
             return en
         case 'zh':
