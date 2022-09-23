@@ -140,7 +140,7 @@ const BatchTransfer = () => {
 
     const remaining = new BigNumber(
       userAccount?.balance[currency.symbol] || 0
-    ).minus(totalAmount);
+    ).minus(totalAmount || 0);
     setRemaining(remaining);
 
     const addressErrors: ValidationError[] = [];
@@ -319,6 +319,13 @@ const BatchTransfer = () => {
     };
     syncAccount();
   }, [currency, txStatus]);
+
+  useEffect(() => {
+    const remaining = new BigNumber(
+      userAccount?.balance[currency.symbol] || 0
+    ).minus(totalAmount || 0);
+    setRemaining(remaining);
+  }, [userAccount]);
 
   return (
     <>
