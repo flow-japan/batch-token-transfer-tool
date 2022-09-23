@@ -390,7 +390,7 @@ const BatchTransfer = () => {
                           setRemaining(
                             new BigNumber(
                               userAccount?.balance[currencySymbol] || 0
-                            ).minus(totalAmount)
+                            ).minus(totalAmount || 0)
                           );
                         }}
                       >
