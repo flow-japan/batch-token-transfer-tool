@@ -71,10 +71,10 @@ const BatchTransfer = () => {
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
   );
-  
+
   const t = useMemo(() => {
-    return getLocale(lang)
-  }, [lang])
+    return useLocale(lang);
+  }, [lang]);
 
   const addRecipientAndAmount = () => {
     setOutputs([...outputs, emptyOutput]);
@@ -325,12 +325,8 @@ const BatchTransfer = () => {
       <VStack align={'center'}>
         <Box className={styles.box}>
           <Text className={styles.h1}>{t.TRANSFER_FLOW}</Text>
-          <Text className={styles.h2}>
-            {t.DESC_1}
-          </Text>
-          <Text className={styles.h2}>
-            {t.DESC_2}
-          </Text>
+          <Text className={styles.h2}>{t.DESC_1}</Text>
+          <Text className={styles.h2}>{t.DESC_2}</Text>
 
           <Text className={styles.h1}>{t.YOUR_WALLET}</Text>
 
@@ -390,7 +386,7 @@ const BatchTransfer = () => {
                           setRemaining(
                             new BigNumber(
                               userAccount?.balance[currencySymbol] || 0
-                            ).minus(totalAmount)
+                            ).minus(totalAmount || 0)
                           );
                         }}
                       >

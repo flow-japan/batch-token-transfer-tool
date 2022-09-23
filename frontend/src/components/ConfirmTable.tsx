@@ -25,8 +25,8 @@ const ConfirmTable: React.FC<{
   const [lang] = useRecoilState(localeState);
 
   const t = useMemo(() => {
-    return getLocale(lang)
-  }, [lang])
+    return useLocale(lang);
+  }, [lang]);
 
   useMemo(() => {
     const outputs: OutputWithError[] = [];
