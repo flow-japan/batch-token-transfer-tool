@@ -9,18 +9,14 @@ const Landing = () => {
   const [lang] = useRecoilState(localeState);
 
   const t = useMemo(() => {
-    return useLocale(lang)
-  }, [lang])
+    return useLocale(lang);
+  }, [lang]);
 
   return (
     <Box className={styles.box}>
       <VStack>
-        <Text className={styles.heading}>
-          {t.DESC_3}
-        </Text>
-        <Text className={styles.subHeading}>
-          {t.DESC_2}
-        </Text>
+        <Text className={styles.heading}>{t.DESC_3}</Text>
+        <Text className={styles.subHeading}>{t.DESC_2}</Text>
       </VStack>
     </Box>
   );
