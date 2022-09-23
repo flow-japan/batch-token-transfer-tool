@@ -4,7 +4,7 @@ import styles from '../styles/ConfirmTable.module.css';
 import { useRecoilState } from 'recoil';
 import { localeState, userAccountState } from '../store';
 import { ValidationError } from 'types/error';
-import { useLocale } from 'locale/localeHook';
+import { getLocale } from 'locale/locale';
 
 type OutputWithError = {
   address: string;

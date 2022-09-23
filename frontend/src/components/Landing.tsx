@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { Box, VStack, Text } from '@chakra-ui/react';
 import styles from '../styles/Landing.module.css';
-import { useLocale } from 'locale/localeHook';
 import { useRecoilState } from 'recoil';
 import { localeState } from 'store';
+import { getLocale } from 'locale/locale';
 
 const Landing = () => {
   const [lang] = useRecoilState(localeState);
