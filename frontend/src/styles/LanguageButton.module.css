@@ -21,20 +21,71 @@
   align-items: center;
 }
 
-.en{
+.home {
+  background-image: url("../../public/translate.min.svg");
+  width: 40px;
+  height: 40px;
+}
+
+.en {
   background-image: url("../../public/en.min.svg");
   width: 40px;
   height: 40px;
 }
+.en:hover {
+  background-image: url("../../public/en.min.svg");
+  width: 60px;
+  height: 60px;
+}
+.en2 {
+  background-image: url("../../public/en2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.en2:hover {
+  background-image: url("../../public/en2.min.svg");
+  width: 60px;
+  height: 60px;
+}
 
-.zh{
+.zh {
   background-image: url("../../public/han.min.svg");
   width: 40px;
   height: 40px;
 }
+.zh:hover {
+  background-image: url("../../public/han.min.svg");
+  width: 60px;
+  height: 60px;
+}
+.zh2 {
+  background-image: url("../../public/han2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.zh2:hover {
+  background-image: url("../../public/han2.min.svg");
+  width: 60px;
+  height: 60px;
+}
 
-.ja{
+.ja {
   background-image: url("../../public/a.min.svg");
   width: 40px;
   height: 40px;
+}
+.ja:hover {
+  background-image: url("../../public/a.min.svg");
+  width: 60px;
+  height: 60px;
+}
+.ja2 {
+  background-image: url("../../public/a2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.ja2:hover {
+  background-image: url("../../public/a2.min.svg");
+  width: 60px;
+  height: 60px;
 }
