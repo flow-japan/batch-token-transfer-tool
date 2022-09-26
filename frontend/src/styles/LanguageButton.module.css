@@ -34,8 +34,8 @@
 }
 .en:hover {
   background-image: url("../../public/en.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 .en2 {
   background-image: url("../../public/en2.min.svg");
@@ -44,8 +44,8 @@
 }
 .en2:hover {
   background-image: url("../../public/en2.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 
 .zh {
@@ -55,8 +55,8 @@
 }
 .zh:hover {
   background-image: url("../../public/han.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 .zh2 {
   background-image: url("../../public/han2.min.svg");
@@ -65,8 +65,8 @@
 }
 .zh2:hover {
   background-image: url("../../public/han2.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 
 .ja {
@@ -76,8 +76,8 @@
 }
 .ja:hover {
   background-image: url("../../public/a.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 .ja2 {
   background-image: url("../../public/a2.min.svg");
@@ -86,6 +86,6 @@
 }
 .ja2:hover {
   background-image: url("../../public/a2.min.svg");
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
