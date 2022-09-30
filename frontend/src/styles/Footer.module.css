@@ -1,0 +1,27 @@
+.footerBox {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-top-width: 1px;
+  border-style: sold;
+  border-color: #fff;
+}
+
+.footerTextBox {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+
+  margin: 24px;
+  font-size: 24px;
+  line-height: 31.2px;
+}
+@media screen and (max-width: 768px) {
+  .footerTextBox {
+    margin: 16px;
+    font-size: 16px;
+    line-height: 15.6px;
+  }
+}

@@ -1,0 +1,91 @@
+
+.lang {
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+  left: 0;
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lang:hover .dropdown {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.home {
+  background-image: url("../../public/translate.min.svg");
+  width: 40px;
+  height: 40px;
+}
+
+.en {
+  background-image: url("../../public/en.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.en:hover {
+  background-image: url("../../public/en.min.svg");
+  width: 48px;
+  height: 48px;
+}
+.en2 {
+  background-image: url("../../public/en2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.en2:hover {
+  background-image: url("../../public/en2.min.svg");
+  width: 48px;
+  height: 48px;
+}
+
+.zh {
+  background-image: url("../../public/han.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.zh:hover {
+  background-image: url("../../public/han.min.svg");
+  width: 48px;
+  height: 48px;
+}
+.zh2 {
+  background-image: url("../../public/han2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.zh2:hover {
+  background-image: url("../../public/han2.min.svg");
+  width: 48px;
+  height: 48px;
+}
+
+.ja {
+  background-image: url("../../public/a.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.ja:hover {
+  background-image: url("../../public/a.min.svg");
+  width: 48px;
+  height: 48px;
+}
+.ja2 {
+  background-image: url("../../public/a2.min.svg");
+  width: 40px;
+  height: 40px;
+}
+.ja2:hover {
+  background-image: url("../../public/a2.min.svg");
+  width: 48px;
+  height: 48px;
+}
