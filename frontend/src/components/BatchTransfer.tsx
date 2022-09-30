@@ -131,7 +131,7 @@ const BatchTransfer = () => {
 
   const updateTransactionDetails = (outputs) => {
     const totalAmount = outputs
-      .map((x) => x.amount)
+      .map((x) => x.amount.toFixed(8))
       .reduce(
         (sum, amount) => sum.plus(new BigNumber(amount)),
         new BigNumber(0.0)
@@ -267,7 +267,7 @@ const BatchTransfer = () => {
       setErrorText('');
       const tx = await sendFT(
         outputs.map((x) => x.address),
-        outputs.map((x) => x.amountStr),
+        outputs.map((x) => x.amount.toFixed(8)),
         currency.contractName,
         currency.addresses[network?.network || 'testnet'],
         currency.vaultStoragePath,
