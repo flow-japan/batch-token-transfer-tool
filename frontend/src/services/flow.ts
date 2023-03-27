@@ -1,5 +1,6 @@
 const fcl = require('@onflow/fcl'); // Using import causes an error.
 import * as types from '@onflow/types';
+import { localResolver, serviceName } from './resolver';
 
 fcl.config({
   'app.detail.title': 'Batch Token Transfer Tool',
@@ -29,14 +30,32 @@ const connectWallet = async (network: string = 'testnet', setter: any) => {
     .put('discovery.wallet', network === 'mainnet'
       ? 'https://fcl-discovery.onflow.org/authn'
       : 'https://fcl-discovery.onflow.org/testnet/authn')
+    .put('flow.network', network)
     .put('0xFUNGIBLETOKEN', fungibleTokenAddresses[network])
     .put('0xFLOWTOKEN', flowTokenAddresses[network])
     .put('0xFUSD', fusdAddresses[network])
+    .put('fcl.accountProof.resolver', localResolver)
   try {
-    await fcl.authenticate();
+    const res = await fcl.authenticate();
+    if (!res.loggedIn) {
+      console.log('not logged in')
+      return
+    }
+    const proofService = res.services.find(
+      (services: any) => services.type === 'account-proof',
+    );
+    console.log('proof-service', proofService)
+    const verified = await fcl.AppUtils.verifyAccountProof(
+      serviceName,
+      proofService.data,
+    );
+    if (!verified) {
+      console.log('not verified')
+      return
+    }
   } catch (e) {
     console.log(e);
-    return null;
+    return null
   }
   fcl.currentUser().subscribe(setter);
 };
